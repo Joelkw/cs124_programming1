@@ -59,138 +59,145 @@ int main(int argc, char* argv[])
 	// seed the random number generator
 	srand(time(NULL));
 
-	// start timer
+	// begin timing
 	clock_t start = clock();
 	clock_t diff;
 
-	// initialize all of our nodes
 	node* nodes[numpoints]; 
-	for (int i = 0; i <= numpoints; i++)
+
+	// iterate through trials
+	for (int t = 0; t < numtrials; t++)
 	{
-		nodes[i] = malloc(sizeof(node));
-		nodes[i]->num = i;
-		nodes[i]->key = 10 + i;
-		nodes[i]->parent = NULL;
-	}
-
-	// let the 0th node be the size of the heap
-	nodes[0]->key = numpoints;
-	// set the root's key to 0
-	nodes[1]->key = 0;
-
-	// create adjacency matrix for edgeweights
-	float edgeWeights[numpoints+1][numpoints+1];
-
-	// match on dimension type
-	if (dimension == 0)
-	{
-		// fill adjcacency matrix with edgeweights
-		for (int i = 1; i <= numpoints; i++)
+		for (int i = 0; i <= numpoints; i++)
 		{
-			for (int j = 1; j <= numpoints; j++)
-			{
-				edgeWeights[i][j] = randNum();
-			}
+			nodes[i] = malloc(sizeof(node));
+			nodes[i]->num = i;
+			nodes[i]->key = 10 + i;
+			nodes[i]->parent = NULL;
 		}
-	}
 
-	if (dimension == 2) 
-	{
-		// our graph is an array of heaps of edge distances and the
-		// connecting point
-		llnode* graph[numpoints];
+		// let the 0th node be the size of the heap
+		nodes[0]->key = numpoints;
+		// set the root's key to 0
+		nodes[1]->key = 0;
 
-		// a place for our x and y coords
-		float xs[numpoints];
-		float ys[numpoints];
-		// generate our points
-		for (int i = 0; i < numpoints; i++) 
+		// create adjacency matrix for edgeweights
+		float edgeWeights[numpoints+1][numpoints+1];
+
+		// match on dimension type
+		if (dimension == 0)
 		{
-			xs[i] = randNum();
-			ys[i] = randNum();
-			// initialize our graph here
-			llnode* nullHead = NULL;
-			graph[i] = nullHead;
-		}
-		// instert points into graph
-		// - i is the llnode we are on
-		for (int i = 0; i < numpoints; i++)
-		{
-			// - j wil loop through other llnodes, don't care about i to i
-			for (int j = 0; (j < numpoints); j++)
+			// fill adjcacency matrix with edgeweights
+			for (int i = 1; i <= numpoints; i++)
 			{
-				if (i != j)
+				for (int j = 1; j <= numpoints; j++)
 				{
-					// get the head of the list
-					//llnode* head = graph[i];
-					// if it is the first point so far
-					//printf("i: %d j: %d \r\n", i, j);
-					llnode* newEdge = malloc(sizeof(llnode));
-					if (newEdge == NULL)
-					{
-						exit(1);
-					}
-					newEdge->dist = dist2d(xs[i],ys[i],xs[j],ys[j]);
-					newEdge->llnodeIndex = j;
-					newEdge->next = graph[i];
-					graph[i] = newEdge;
+					edgeWeights[i][j] = randNum();
 				}
 			}
 		}
-	}
 
-	if (dimension == 3) 
-	{
-		// our graph is an array of heaps of edge distances and the
-		// connecting point
-		llnode* graph[numpoints];
+		if (dimension == 2) 
+		{
+			// our graph is an array of heaps of edge distances and the
+			// connecting point
+			llnode* graph[numpoints];
 
-		// a place for our x and y coords
-		float xs[numpoints];
-		float ys[numpoints];
-		float zs[numpoints];
-		// generate our points
-		for (int i = 0; i < numpoints; i++) 
-		{
-			xs[i] = randNum();
-			ys[i] = randNum();
-			zs[i] = randNum();
-			// initialize our graph here
-			llnode* nullHead = NULL;
-			graph[i] = nullHead;
-		}
-		// instert points into graph
-		// - i is the llnode we are on
-		for (int i = 0; i < numpoints; i++)
-		{
-			// - j wil loop through other llnodes, don't care about i to i
-			for (int j = 0; (j < numpoints); j++)
+			// a place for our x and y coords
+			float xs[numpoints];
+			float ys[numpoints];
+			// generate our points
+			for (int i = 0; i < numpoints; i++) 
 			{
-				if (i != j)
+				xs[i] = randNum();
+				ys[i] = randNum();
+				// initialize our graph here
+				llnode* nullHead = NULL;
+				graph[i] = nullHead;
+			}
+			// instert points into graph
+			// - i is the llnode we are on
+			for (int i = 0; i < numpoints; i++)
+			{
+				// - j wil loop through other llnodes, don't care about i to i
+				for (int j = 0; (j < numpoints); j++)
 				{
-					// get the head of the list
-					//llnode* head = graph[i];
-					// if it is the first point so far
-					//printf("i: %d j: %d \r\n", i, j);
-					llnode* newEdge = malloc(sizeof(llnode));
-					if (newEdge == NULL)
+					if (i != j)
 					{
-						exit(1);
+						// get the head of the list
+						//llnode* head = graph[i];
+						// if it is the first point so far
+						//printf("i: %d j: %d \r\n", i, j);
+						llnode* newEdge = malloc(sizeof(llnode));
+						if (newEdge == NULL)
+						{
+							exit(1);
+						}
+						newEdge->dist = dist2d(xs[i],ys[i],xs[j],ys[j]);
+						newEdge->llnodeIndex = j;
+						newEdge->next = graph[i];
+						graph[i] = newEdge;
 					}
-					newEdge->dist = dist3d(xs[i],ys[i],zs[i],xs[j],ys[j],zs[j]);
-					newEdge->llnodeIndex = j;
-					newEdge->next = graph[i];
-					graph[i] = newEdge;
 				}
 			}
 		}
-	}
 
-	// once we have generated all of our nodes and edges, run prim's!
-	float x = prim(nodes, edgeWeights);
+		if (dimension == 3) 
+		{
+			// our graph is an array of heaps of edge distances and the
+			// connecting point
+			llnode* graph[numpoints];
+
+			// a place for our x and y coords
+			float xs[numpoints];
+			float ys[numpoints];
+			float zs[numpoints];
+			// generate our points
+			for (int i = 0; i < numpoints; i++) 
+			{
+				xs[i] = randNum();
+				ys[i] = randNum();
+				zs[i] = randNum();
+				// initialize our graph here
+				llnode* nullHead = NULL;
+				graph[i] = nullHead;
+			}
+			// instert points into graph
+			// - i is the llnode we are on
+			for (int i = 0; i < numpoints; i++)
+			{
+				// - j wil loop through other llnodes, don't care about i to i
+				for (int j = 0; (j < numpoints); j++)
+				{
+					if (i != j)
+					{
+						// get the head of the list
+						//llnode* head = graph[i];
+						// if it is the first point so far
+						//printf("i: %d j: %d \r\n", i, j);
+						llnode* newEdge = malloc(sizeof(llnode));
+						if (newEdge == NULL)
+						{
+							exit(1);
+						}
+						newEdge->dist = dist3d(xs[i],ys[i],zs[i],xs[j],ys[j],zs[j]);
+						newEdge->llnodeIndex = j;
+						newEdge->next = graph[i];
+						graph[i] = newEdge;
+					}
+				}
+			}
+		}
+
+		// once we have generated all of our nodes and edges, run prim's!
+		float x = prim(nodes, edgeWeights);
+	}
 
 	// end timing
 	diff = clock() - start;
 	int msec = diff * 1000 / CLOCKS_PER_SEC;
-	printf("Dim0 took %d seconds and %d milliseconds \n", msec/1000, msec%1000);
+
+	// output results
+	printf("%i trials of dim%i with %i points took %d seconds and %d milliseconds \n",
+			numtrials, dimension, numpoints, msec/1000, msec%1000);
 }
