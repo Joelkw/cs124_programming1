@@ -92,40 +92,10 @@ int main(int argc, char* argv[])
 				edgeWeights[i][j] = randNum();
 			}
 		}
-
-		// THIS IS A FUNCTION FOR DEBUGGING
-		// IT PRINTS THE MATRIX
-		// printf("edgeweight[1][0] %2.6f \r\n", edgeWeights[1][0]);
-		// displayDim0(numpoints, edgeWeights);
-
-		// printf("graph dimension 0 is: \r\n");
-		// printf("xxx ");
-		// for (int k = 0; k < numpoints; k++ )
-		// {
-		// 	printf("%d:       ", k);
-		// }
-		// printf("\r\n");
-		// for (int i = 0; i < numpoints; i++)
-		// {
-		// 	printf("%d:  ", i);
-		// 	for (int j = 0; j < numpoints; j++)
-		// 	{
-		// 		printf("%2.6f ", edgeWeights[i][j]);
-		// 	}
-		// 	printf("\r\n");
-		// }
-		// END OF DEBUGGING FUNCTION
 	}
 
-	////////////////////////////////////////////////////
-	// Start of 2-d unit square of points implementation
-	////////////////////////////////////////////////////
-	if (dimension ==2) 
+	if (dimension == 2) 
 	{
-		// start timer
-		clock_t start = clock();
-		clock_t diff;
-
 		// our graph is an array of heaps of edge distances and the
 		// connecting point
 		llnode* graph[numpoints];
@@ -167,32 +137,8 @@ int main(int argc, char* argv[])
 				}
 			}
 		}
-
-		diff = clock() - start;
-		int msec = diff * 1000 / CLOCKS_PER_SEC;
-		printf("2D cube took %d seconds and %d milliseconds \n", msec/1000, msec%1000);
-
-		/////////////////////////////////////////////
-		// Start of various testing for 2d 
-		/////////////////////////////////////////////
-		// // * heuristic testing for now, some printfs 
-		// // * check point gen
-		// for (int i = 0; i < numpoints; i++) 
-		// {
-		// 	printf("point %d was (%2.6f,%2.6f) \r\n", i, xs[i],ys[i]);
-		// }
-		// // * check distance
-		// printf("dist between points 0 and 1 was: %2.6f \r\n", dist2d(xs[0],ys[0],xs[1],ys[1]));
- 		// // * check LL implementation
- 		// for (int i = 0; i < numpoints; i++)
- 		// {
- 		// 	 printf("%d point's first point was edge: %2.6f and vertex: %d \r\n", i, graph[i]->dist, graph[i]->llnodeIndex);
- 		// }	
 	}
 
-	////////////////////////////////////////////////////
-	// Start of 3-d unit square of points implementation
-	////////////////////////////////////////////////////
 	if (dimension == 3) 
 	{
 		// start timer
@@ -242,30 +188,9 @@ int main(int argc, char* argv[])
 				}
 			}
 		}
-
-		diff = clock() - start;
-		int msec = diff * 1000 / CLOCKS_PER_SEC;
-		printf("3D cube took %d seconds and %d milliseconds \n", msec/1000, msec%1000);
-
-		/////////////////////////////////////////////
-		// Start of various testing for 3d 
-		/////////////////////////////////////////////
-		// // * heuristic testing for now, some printfs 
-		// * check point gen
-		// for (int i = 0; i < numpoints; i++) 
-		// {
-		// 	printf("point %d was (%2.6f, %2.6f, %2.6f) \r\n", i, xs[i],ys[i],zs[i]);
-		// }
-		// // * check distance
-		// printf("dist between points 0 and 1 was: %2.6f \r\n", dist2d(xs[0],ys[0],xs[1],ys[1]));
- 		// // * check LL implementation
- 		// for (int i = 0; i < numpoints; i++)
- 		// {
- 		// 	 printf("%d edge: %2.6f vertex: %d | ", i, graph[i]->dist, graph[i]->llnodeIndex);
- 		// }	
 	}
 
-	// once we have generated all of our llnodes and edges, run prim!
+	// once we have generated all of our nodes and edges, run prim's!
 	float x = prim(nodes, edgeWeights);
 
 	// end timing
