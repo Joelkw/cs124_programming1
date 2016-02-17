@@ -14,7 +14,7 @@ void printHeap(node* heap[])
 	printf("size: %i\n", (int) heap[0]->key);
 	for (int j = 1; j <= heap[0]->key; j++)
 	{
-		printf("%f ", heap[j]->key);
+		printf("%d ", heap[j]->num);
 	}
 	printf("\n");
 }
@@ -26,10 +26,12 @@ bool minHeapify(node* heap[], int i)
 	// find location of left and right children
 	int l = 2 * i;
 	int r = 2 * i + 1;
+	// get size of heap
+	int size = (int) heap[0]->key;
 	// compare to left child
-	smallest = (l <= SIZE && heap[l]->key < heap[i]->key) ? l : i;
+	smallest = (l <= size && heap[l]->key < heap[i]->key) ? l : i;
 	// compare to right child
-	if (r <= SIZE && heap[r]->key < heap[smallest]->key)
+	if (r <= size && heap[r]->key < heap[smallest]->key)
 	{
 		smallest = r;
 	}
@@ -49,12 +51,14 @@ bool minHeapify(node* heap[], int i)
 node* extractMin(node* heap[])
 {
 	int size = (int) heap[0]->key;
+	// swap ending node into start of heap
 	node* min = heap[1];
 	heap[1] = heap[size];
 	// decrease size
 	heap[0]->key = size - 1;
 	// balance our heap
 	minHeapify(heap, 1);
+	// return node
 	return min;
 }
 

@@ -45,12 +45,19 @@ float prim(node* nodes[5], float edges[5][5])
 
 	// find length of MST by summing up parent-kids in forest
 	float sum = 0;
-	for (int i = 0; i < 4; i++)
+	for (int i = 0; i <= 3; i++)
 	{
 		node* u = forest[i];
 		printf("key %f at num %i\n", u->key, u->num);
 		sum += u->key;
 	}
+
+	// free our edges and root
+	for (int i = 0; i < 3; i++)
+	{
+		free(forest[i]);
+	}
+	free(nodes[0]);
 
 	// return the size of our MST
 	printf("Length of MST: %f\n", sum);
