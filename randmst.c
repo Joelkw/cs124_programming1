@@ -10,7 +10,7 @@
 
 #include "header.h"
 
-// llnodes for min heap eventually, linked list right now
+// nodes for min heap eventually, linked list right now
 typedef struct llnode {
     float dist;
     int llnodeIndex;
@@ -25,30 +25,6 @@ float randNum()
 	return randNum;
 }
 
-// our heap implementation:
-
-// a function to display a dimension 0 graph
-int displayDim0(int numpoints, float edgeWeights[65536][65536]) 
-{
-	// printf("graph dimension 0 is: \r\n");
-	// printf("xxx ");
-	// for (float k = 0.0; k < numpoints; k++ )
-	// {
-	// 	printf("%2.6f ", k);
-	// }
-	// printf("\r\n");
-	// for (int i = 0; i < numpoints; i++)
-	// {
-	// 	printf("%d:  ", i);
-	// 	for (int j = 0; j < numpoints; j++)
-	// 	{
-	// 		printf("%2.6f ", edgeWeights[1][j]);
-	// 	}
-	// 	printf("\r\n");
-	// }
-	return 0;
-}
-
 // we may want to fold this in eventually to optimize
 // ( (x1,y1,x2,y2) <- IMPORTANT )
 float dist2d(float x1, float y1, float x2, float y2) 
@@ -61,7 +37,7 @@ float dist3d(float x1, float y1, float z1, float x2, float y2, float z2)
 	return sqrt((x2-x1)*(x2-x1)+(y2-y1)*(y2-y1)+(z2-z1)*(z2-z1));
 }
 
-int main (int argc, char* argv[])
+int main(int argc, char* argv[])
 {
 	// make sure format was correct
 	if (argc != 5)
@@ -83,6 +59,10 @@ int main (int argc, char* argv[])
 	// seed the random number generator
 	srand(time(NULL));
 
+	// start timer
+	clock_t start = clock();
+	clock_t diff;
+
 	// initialize all of our nodes
 	node* nodes[numpoints]; 
 	for (int i = 0; i <= numpoints; i++)
@@ -99,20 +79,15 @@ int main (int argc, char* argv[])
 	nodes[1]->key = 0;
 
 	// create adjacency matrix for edgeweights
-	float edgeWeights[numpoints][numpoints];
+	float edgeWeights[numpoints+1][numpoints+1];
 
 	// match on dimension type
 	if (dimension == 0)
 	{
-		// start timer
-		clock_t start = clock();
-		clock_t diff;
-		// build a graph stored as an adjacency matrix
-		// we know there is every possible edge so we just need points
-		// fill it with edge weights
-		for (int i = 0; i < numpoints; i++)
+		// fill adjcacency matrix with edgeweights
+		for (int i = 1; i <= numpoints; i++)
 		{
-			for (int j = 0; j < numpoints; j++)
+			for (int j = 1; j <= numpoints; j++)
 			{
 				edgeWeights[i][j] = randNum();
 			}
@@ -140,10 +115,6 @@ int main (int argc, char* argv[])
 		// 	printf("\r\n");
 		// }
 		// END OF DEBUGGING FUNCTION
-		diff = clock() - start;
-		int msec = diff * 1000 / CLOCKS_PER_SEC;
-		printf("Dim0 took %d seconds and %d milliseconds \n", msec/1000, msec%1000);
-
 	}
 
 	////////////////////////////////////////////////////
@@ -296,4 +267,9 @@ int main (int argc, char* argv[])
 
 	// once we have generated all of our llnodes and edges, run prim!
 	float x = prim(nodes, edgeWeights);
+
+	// end timing
+	diff = clock() - start;
+	int msec = diff * 1000 / CLOCKS_PER_SEC;
+	printf("Dim0 took %d seconds and %d milliseconds \n", msec/1000, msec%1000);
 }
