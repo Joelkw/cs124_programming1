@@ -1,12 +1,6 @@
 // CS124 - Programming Assignment 1
 // Joel Kwartler & Arianna Benson
-
-// NOTES TO SELF
-
-// rand should be seeded only once even if we use it
-// 5 times
-
-// 
+ 
 #include <stdio.h>
 #include <time.h>
 #include <limits.h>
