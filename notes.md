@@ -25,3 +25,8 @@ Various tasks
 - prim’s algorithm
 - square
 - cube/hypercube
+
+Little parts
+==
+- Distance function for 2,3,4 dimensions
+- 
