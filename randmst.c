@@ -93,98 +93,58 @@ int main(int argc, char* argv[])
 				for (int j = 1; j <= numpoints; j++)
 				{
 					edgeWeights[i][j] = randNum();
+					// ensure mirroring
+					edgeWeights[j][i] = edgeWeights[i][j]; 
 				}
 			}
 		}
 
 		if (dimension == 2) 
 		{
-			// our graph is an array of heaps of edge distances and the
-			// connecting point
-			llnode* graph[numpoints];
-
-			// a place for our x and y coords
+			// a place for our x and y coordinates
 			float xs[numpoints];
 			float ys[numpoints];
 			// generate our points
-			for (int i = 0; i < numpoints; i++) 
+			for (int i = 1; i <= numpoints; i++) 
 			{
 				xs[i] = randNum();
 				ys[i] = randNum();
-				// initialize our graph here
-				llnode* nullHead = NULL;
-				graph[i] = nullHead;
 			}
-			// instert points into graph
-			// - i is the llnode we are on
-			for (int i = 0; i < numpoints; i++)
+			// calculate all of our edges
+			for (int i = 1; i <= numpoints; i++)
 			{
-				// - j wil loop through other llnodes, don't care about i to i
-				for (int j = 0; (j < numpoints); j++)
+				// j wil loop through other nodes
+				for (int j = 1; j <= numpoints; j++)
 				{
-					if (i != j)
-					{
-						// get the head of the list
-						//llnode* head = graph[i];
-						// if it is the first point so far
-						//printf("i: %d j: %d \r\n", i, j);
-						llnode* newEdge = malloc(sizeof(llnode));
-						if (newEdge == NULL)
-						{
-							exit(1);
-						}
-						newEdge->dist = dist2d(xs[i],ys[i],xs[j],ys[j]);
-						newEdge->llnodeIndex = j;
-						newEdge->next = graph[i];
-						graph[i] = newEdge;
-					}
+					edgeWeights[i][j] = dist2d(xs[i],ys[i],xs[j],ys[j]);
+					// ensure mirroring
+					edgeWeights[j][i] = edgeWeights[i][j];
 				}
 			}
 		}
 
 		if (dimension == 3) 
 		{
-			// our graph is an array of heaps of edge distances and the
-			// connecting point
-			llnode* graph[numpoints];
-
-			// a place for our x and y coords
+			// a place for our x, y, and z coordinates
 			float xs[numpoints];
 			float ys[numpoints];
 			float zs[numpoints];
 			// generate our points
-			for (int i = 0; i < numpoints; i++) 
+			for (int i = 1; i <= numpoints; i++) 
 			{
 				xs[i] = randNum();
 				ys[i] = randNum();
 				zs[i] = randNum();
-				// initialize our graph here
-				llnode* nullHead = NULL;
-				graph[i] = nullHead;
 			}
-			// instert points into graph
-			// - i is the llnode we are on
-			for (int i = 0; i < numpoints; i++)
+			// calculate all of our edges
+			for (int i = 1; i < numpoints; i++)
 			{
-				// - j wil loop through other llnodes, don't care about i to i
-				for (int j = 0; (j < numpoints); j++)
+				// j will loop through other nodes
+				for (int j = 1; j <= numpoints; j++)
 				{
-					if (i != j)
-					{
-						// get the head of the list
-						//llnode* head = graph[i];
-						// if it is the first point so far
-						//printf("i: %d j: %d \r\n", i, j);
-						llnode* newEdge = malloc(sizeof(llnode));
-						if (newEdge == NULL)
-						{
-							exit(1);
-						}
-						newEdge->dist = dist3d(xs[i],ys[i],zs[i],xs[j],ys[j],zs[j]);
-						newEdge->llnodeIndex = j;
-						newEdge->next = graph[i];
-						graph[i] = newEdge;
-					}
+					edgeWeights[i][j] = dist3d(xs[i],ys[i],zs[i],xs[j],ys[j],zs[j]);
+					// ensure mirroring
+					edgeWeights[j][i] = edgeWeights[i][j];
 				}
 			}
 		}
