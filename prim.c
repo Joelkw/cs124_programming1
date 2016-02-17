@@ -8,23 +8,40 @@
 
 #include "header.h"
 
-// runs prim, beginning at h
-void prim(int nodes[4], int weights[4][5])
-{
-
-	return;
-}
-
 int main(int argc, char* argv[])
 {
-	// we have 4 nodes, and 16 edges, each with a weight
-	// we have an array of heaps of edges (array of arrays)
+	// initialize all of our nodes
+	node* nodes[5]; 
+	for (int i = 0; i <= 4; i++)
+	{
+		nodes[i] = malloc(sizeof(node));
+		nodes[i]->num = i;
+		nodes[i]->key = 2;
+		nodes[i]->parent = NULL;
+	}
 
-	/* // initialize our heap; 0th element is size
-	int heap[SIZE+1] = {16, 2, 8, 5, 7, 6, 3, 1, 4,
-					  15, 17, 19, 100, 12, -1, 10, 16};
-	printHeap(heap);
-	// build our heap
-	buildMinHeap(heap);
-	printHeap(heap); */
+	// by default, let the 0th node be the size of the heap
+	nodes[0]->key = 4;
+	// set the root's key to 0
+	nodes[1]->key = 0;
+
+	// heapify our nodes
+	buildMinHeap(nodes);
+
+	// initialize all of our edges
+
+	// while the queue is not empty, extract minimum node
+	while(nodes[0]->key != 0)
+	{
+		// get minimum node
+		node* u = extractMin(nodes);
+		int num = u->key;
+
+		// get edges in graph adjacent to u
+
+		nodes[0]->key--;
+	} 
+
+	// return the size of our MST
+	printf("Size: %i\n", 4);
 }

@@ -6,11 +6,7 @@
 #include <stdbool.h>
 #include <math.h>
 
-void printHeap(int heap[]);
-bool minHeapify(int heap[], int i);
-bool buildMinHeap(int heap[]);
-
-#define SIZE 16
+#define SIZE 4
 
 typedef struct node
 {
@@ -19,8 +15,7 @@ typedef struct node
 	struct node *parent;
 } node;
 
-typedef struct edge
-{
-	struct node *to;
-	float weight;
-} edge;
+void printHeap(node* heap[]);
+bool minHeapify(node* heap[], int i);
+bool buildMinHeap(node* heap[]);
+node* extractMin(node* heap[]);
