@@ -25,8 +25,6 @@ float randNum()
 	return randNum;
 }
 
-// we may want to fold this in eventually to optimize
-// ( (x1,y1,x2,y2) <- IMPORTANT )
 float dist2d(float x1, float y1, float x2, float y2) 
 {
 	return sqrt((x2-x1)*(x2-x1)+(y2-y1)*(y2-y1));
@@ -35,6 +33,11 @@ float dist2d(float x1, float y1, float x2, float y2)
 float dist3d(float x1, float y1, float z1, float x2, float y2, float z2) 
 {
 	return sqrt((x2-x1)*(x2-x1)+(y2-y1)*(y2-y1)+(z2-z1)*(z2-z1));
+}
+
+float dist4d(float x1, float y1, float z1, float t1, float x2, float y2, float z2, float t2) 
+{
+	return sqrt((x2-x1)*(x2-x1)+(y2-y1)*(y2-y1)+(z2-z1)*(z2-z1)+(t2-t1)*(t2-t1));
 }
 
 int main(int argc, char* argv[])
@@ -143,6 +146,36 @@ int main(int argc, char* argv[])
 				for (int j = 1; j <= numpoints; j++)
 				{
 					edgeWeights[i][j] = dist3d(xs[i],ys[i],zs[i],xs[j],ys[j],zs[j]);
+					// ensure mirroring
+					edgeWeights[j][i] = edgeWeights[i][j];
+				}
+			}
+		}
+
+		if (dimension == 4) 
+		{
+			// a place for our x, y, and z coordinates
+			float xs[numpoints];
+			float ys[numpoints];
+			float zs[numpoints];
+			float ts[numpoints];
+
+			// generate our points
+			for (int i = 1; i <= numpoints; i++) 
+			{
+				xs[i] = randNum();
+				ys[i] = randNum();
+				zs[i] = randNum();
+				ts[i] = randNum();
+			}
+			// calculate all of our edges
+			for (int i = 1; i < numpoints; i++)
+			{
+				// j will loop through other nodes
+				for (int j = 1; j <= numpoints; j++)
+				{
+					edgeWeights[i][j] = dist4d(xs[i],ys[i],zs[i],ts[i],
+											   xs[j],ys[j],zs[j],ts[j]);
 					// ensure mirroring
 					edgeWeights[j][i] = edgeWeights[i][j];
 				}
