@@ -16,11 +16,11 @@ int main(int argc, char* argv[])
 	{
 		nodes[i] = malloc(sizeof(node));
 		nodes[i]->num = i;
-		nodes[i]->key = 2 + i;
+		nodes[i]->key = 10 + i;
 		nodes[i]->parent = NULL;
 	}
 
-	// by default, let the 0th node be the size of the heap
+	// let the 0th node be the size of the heap
 	nodes[0]->key = 4;
 	// set the root's key to 0
 	nodes[1]->key = 0;
@@ -62,18 +62,17 @@ int main(int argc, char* argv[])
 		node* u = extractMin(nodes);
 		// get number of node
 		int num = u->num;
-		// get edges in queue adjacent to u
+		// get edges still in queue & adjacent to u
 		for (int i = 1; i < 5 - index; i++)
 		{
 			// get node at ith place
 			node* nodeV = nodes[i];
 			// get weight from node i to u
 			float weight = edges[num][nodeV->num];
-			// get node i's key
-			float ikey = nodeV->key;
 			// if our weight is lower than node i's key
-			if (weight < ikey)
+			if (weight < nodeV->key)
 			{
+				printf("key from %f to %f\n", nodeV->key, weight);
 				nodeV->parent = u;
 				nodeV->key = weight;
 			}
@@ -87,7 +86,7 @@ int main(int argc, char* argv[])
 	for (int i = 0; i < 4; i++)
 	{
 		node* u = forest[i];
-		node* par = forest[i]->parent;
+		printf("key %f at num %i\n", u->key, u->num);
 		sum += u->key;
 	}
 
