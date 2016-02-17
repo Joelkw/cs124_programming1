@@ -141,10 +141,6 @@ int main(int argc, char* argv[])
 
 	if (dimension == 3) 
 	{
-		// start timer
-		clock_t start = clock();
-		clock_t diff;
-
 		// our graph is an array of heaps of edge distances and the
 		// connecting point
 		llnode* graph[numpoints];
