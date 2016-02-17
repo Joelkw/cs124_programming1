@@ -53,7 +53,7 @@ float prim(node* nodes[5], float edges[5][5])
 	}
 
 	// free our edges and root
-	for (int i = 0; i < 3; i++)
+	for (int i = 0; i < 4; i++)
 	{
 		free(forest[i]);
 	}
@@ -98,7 +98,6 @@ int main(int argc, char* argv[])
 	{
 		for (int j = 1; j < 5; j++)
 		{
-			// ensure mirroring
 			printf("%f ", edges[i][j]); 
 		}
 		printf("\n");
