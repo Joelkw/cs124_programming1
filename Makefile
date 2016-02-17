@@ -1,3 +1,3 @@
-all: prim.c heap.c
-	gcc -o prim prim.c heap.c
-	clang randmst.c -o randmst
+all: randmst.c  prim.c heap.c
+	gcc -o randmst randmst.c prim.c heap.c
+

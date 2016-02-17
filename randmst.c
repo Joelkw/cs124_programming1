@@ -8,12 +8,14 @@
 #include <float.h>
 #include <math.h> // necessary for sqrt()
 
-// nodes for min heap eventually, linked list right now
-typedef struct node {
+#include "header.h"
+
+// llnodes for min heap eventually, linked list right now
+typedef struct llnode {
     float dist;
-    int nodeIndex;
-    struct node* next;
-} node;
+    int llnodeIndex;
+    struct llnode* next;
+} llnode;
 
 // returns a random float between 0 and 1 inclusive 
 float randNum() 
@@ -71,6 +73,8 @@ int main (int argc, char* argv[])
 	// get our arguments
 	int flag = atoi(argv[1]);
 	int numpoints = atoi(argv[2]);
+	// for debugging purposes
+	numpoints = 4;
 	int numtrials = atoi(argv[3]);
 	int dimension = atoi(argv[4]);
 	printf("numpoints %d, numtrials %d, dimension %d, flag %d \r\n", 
@@ -78,6 +82,24 @@ int main (int argc, char* argv[])
 
 	// seed the random number generator
 	srand(time(NULL));
+
+	// initialize all of our nodes
+	node* nodes[numpoints]; 
+	for (int i = 0; i <= numpoints; i++)
+	{
+		nodes[i] = malloc(sizeof(node));
+		nodes[i]->num = i;
+		nodes[i]->key = 10 + i;
+		nodes[i]->parent = NULL;
+	}
+
+	// let the 0th node be the size of the heap
+	nodes[0]->key = numpoints;
+	// set the root's key to 0
+	nodes[1]->key = 0;
+
+	// create adjacency matrix for edgeweights
+	float edgeWeights[numpoints][numpoints];
 
 	// match on dimension type
 	if (dimension == 0)
@@ -87,7 +109,6 @@ int main (int argc, char* argv[])
 		clock_t diff;
 		// build a graph stored as an adjacency matrix
 		// we know there is every possible edge so we just need points
-		float edgeWeights[numpoints][numpoints];	
 		// fill it with edge weights
 		for (int i = 0; i < numpoints; i++)
 		{
@@ -136,7 +157,7 @@ int main (int argc, char* argv[])
 
 		// our graph is an array of heaps of edge distances and the
 		// connecting point
-		node* graph[numpoints];
+		llnode* graph[numpoints];
 
 		// a place for our x and y coords
 		float xs[numpoints];
@@ -147,29 +168,29 @@ int main (int argc, char* argv[])
 			xs[i] = randNum();
 			ys[i] = randNum();
 			// initialize our graph here
-			node* nullHead = NULL;
+			llnode* nullHead = NULL;
 			graph[i] = nullHead;
 		}
 		// instert points into graph
-		// - i is the node we are on
+		// - i is the llnode we are on
 		for (int i = 0; i < numpoints; i++)
 		{
-			// - j wil loop through other nodes, don't care about i to i
+			// - j wil loop through other llnodes, don't care about i to i
 			for (int j = 0; (j < numpoints); j++)
 			{
 				if (i != j)
 				{
 					// get the head of the list
-					//node* head = graph[i];
+					//llnode* head = graph[i];
 					// if it is the first point so far
 					//printf("i: %d j: %d \r\n", i, j);
-					node* newEdge = malloc(sizeof(node));
+					llnode* newEdge = malloc(sizeof(llnode));
 					if (newEdge == NULL)
 					{
 						exit(1);
 					}
 					newEdge->dist = dist2d(xs[i],ys[i],xs[j],ys[j]);
-					newEdge->nodeIndex = j;
+					newEdge->llnodeIndex = j;
 					newEdge->next = graph[i];
 					graph[i] = newEdge;
 				}
@@ -194,7 +215,7 @@ int main (int argc, char* argv[])
  		// // * check LL implementation
  		// for (int i = 0; i < numpoints; i++)
  		// {
- 		// 	 printf("%d point's first point was edge: %2.6f and vertex: %d \r\n", i, graph[i]->dist, graph[i]->nodeIndex);
+ 		// 	 printf("%d point's first point was edge: %2.6f and vertex: %d \r\n", i, graph[i]->dist, graph[i]->llnodeIndex);
  		// }	
 	}
 
@@ -209,7 +230,7 @@ int main (int argc, char* argv[])
 
 		// our graph is an array of heaps of edge distances and the
 		// connecting point
-		node* graph[numpoints];
+		llnode* graph[numpoints];
 
 		// a place for our x and y coords
 		float xs[numpoints];
@@ -222,29 +243,29 @@ int main (int argc, char* argv[])
 			ys[i] = randNum();
 			zs[i] = randNum();
 			// initialize our graph here
-			node* nullHead = NULL;
+			llnode* nullHead = NULL;
 			graph[i] = nullHead;
 		}
 		// instert points into graph
-		// - i is the node we are on
+		// - i is the llnode we are on
 		for (int i = 0; i < numpoints; i++)
 		{
-			// - j wil loop through other nodes, don't care about i to i
+			// - j wil loop through other llnodes, don't care about i to i
 			for (int j = 0; (j < numpoints); j++)
 			{
 				if (i != j)
 				{
 					// get the head of the list
-					//node* head = graph[i];
+					//llnode* head = graph[i];
 					// if it is the first point so far
 					//printf("i: %d j: %d \r\n", i, j);
-					node* newEdge = malloc(sizeof(node));
+					llnode* newEdge = malloc(sizeof(llnode));
 					if (newEdge == NULL)
 					{
 						exit(1);
 					}
 					newEdge->dist = dist3d(xs[i],ys[i],zs[i],xs[j],ys[j],zs[j]);
-					newEdge->nodeIndex = j;
+					newEdge->llnodeIndex = j;
 					newEdge->next = graph[i];
 					graph[i] = newEdge;
 				}
@@ -269,7 +290,10 @@ int main (int argc, char* argv[])
  		// // * check LL implementation
  		// for (int i = 0; i < numpoints; i++)
  		// {
- 		// 	 printf("%d edge: %2.6f vertex: %d | ", i, graph[i]->dist, graph[i]->nodeIndex);
+ 		// 	 printf("%d edge: %2.6f vertex: %d | ", i, graph[i]->dist, graph[i]->llnodeIndex);
  		// }	
 	}
+
+	// once we have generated all of our llnodes and edges, run prim!
+	float x = prim(nodes, edgeWeights);
 }

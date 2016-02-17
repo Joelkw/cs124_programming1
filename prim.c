@@ -64,7 +64,7 @@ float prim(node* nodes[5], float edges[5][5])
 	return sum;
 }
 
-int main(int argc, char* argv[])
+/* int main(int argc, char* argv[])
 {
 	// initialize all of our nodes
 	node* nodes[5]; 
@@ -104,4 +104,4 @@ int main(int argc, char* argv[])
 	}
 
 	float x = prim(nodes, edges);
-}
+} */

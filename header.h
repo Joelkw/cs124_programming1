@@ -19,3 +19,4 @@ void printHeap(node* heap[]);
 bool minHeapify(node* heap[], int i);
 bool buildMinHeap(node* heap[]);
 node* extractMin(node* heap[]);
+float prim(node* nodes[], float edges[5][5]);
