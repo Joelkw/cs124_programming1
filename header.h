@@ -11,7 +11,7 @@
 typedef struct node
 {
 	int num;
-	int key;
+	float key;
 	struct node *parent;
 } node;
 

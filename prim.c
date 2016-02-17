@@ -16,7 +16,7 @@ int main(int argc, char* argv[])
 	{
 		nodes[i] = malloc(sizeof(node));
 		nodes[i]->num = i;
-		nodes[i]->key = 2;
+		nodes[i]->key = 2 + i;
 		nodes[i]->parent = NULL;
 	}
 
@@ -35,47 +35,62 @@ int main(int argc, char* argv[])
 		for (int j = 1; j < 5; j++)
 		{
 			// ensure mirroring
-			edges[i][j] = 0.2 + j / 10 + i / 15;
-			edges[i][j] = 0.2 + j / 10 + i / 15; 
+			edges[i][j] = 0.2 + (float) j / 10 + (float) i / 3;
+			edges[j][i] = edges[i][j]; 
 		}
 	}
 
+	// print out edges (for fun)
+	for (int i = 1; i < 5; i++)
+	{
+		for (int j = 1; j < 5; j++)
+		{
+			// ensure mirroring
+			printf("%f ", edges[i][j]); 
+		}
+		printf("\n");
+	}
+
+	// create a forest to store our path
+	node* forest[4];
+
 	// while the queue is not empty, extract minimum node
+	int index = 0;
 	while(nodes[0]->key != 0)
 	{
 		// get minimum node
 		node* u = extractMin(nodes);
 		// get number of node
 		int num = u->num;
-
-		// get edges in graph adjacent to u
-		for (int i = 1; i < 5; i++)
+		// get edges in queue adjacent to u
+		for (int i = 1; i < 5 - index; i++)
 		{
-			// get node i
-			node* nodeV = malloc(sizeof(node));
-			nodeV->num = i;
-			nodeV->key = 300;
-			nodeV->parent = NULL;
+			// get node at ith place
+			node* nodeV = nodes[i];
 			// get weight from node i to u
-			float weight = edges[num][i];
-			// get node i's key ????
-			float ikey = 3;
-			// see if node is in our existing queue ????
-			bool inQueue = true;
-			if (inQueue && weight < i)
+			float weight = edges[num][nodeV->num];
+			// get node i's key
+			float ikey = nodeV->key;
+			// if our weight is lower than node i's key
+			if (weight < ikey)
 			{
-				
+				nodeV->parent = u;
+				nodeV->key = weight;
 			}
 		}
+		forest[index] = u;
+		index++;
 	}
 
-	// find length of MST tree by SUMMING UP KID PARENT WEIGHTS!!!
-	int sum = 0;
-	for (int i = 1; i < 5; i++)
+	// find length of MST by summing up parent-kids in forest
+	float sum = 0;
+	for (int i = 0; i < 4; i++)
 	{
-		sum += nodes[i]->key;
+		node* u = forest[i];
+		node* par = forest[i]->parent;
+		sum += u->key;
 	}
 
 	// return the size of our MST
-	printf("Length of MST: %i\n", sum);
+	printf("Length of MST: %f\n", sum);
 }

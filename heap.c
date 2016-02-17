@@ -11,10 +11,10 @@
 // prints a heap!
 void printHeap(node* heap[])
 {
-	printf("size: %i\n", heap[0]->key);
+	printf("size: %i\n", (int) heap[0]->key);
 	for (int j = 1; j <= heap[0]->key; j++)
 	{
-		printf("%i ", heap[j]->key);
+		printf("%f ", heap[j]->key);
 	}
 	printf("\n");
 }
@@ -48,7 +48,7 @@ bool minHeapify(node* heap[], int i)
 // plucks an element from the top of the heap
 node* extractMin(node* heap[])
 {
-	int size = heap[0]->key;
+	int size = (int) heap[0]->key;
 	node* min = heap[1];
 	heap[1] = heap[size];
 	// decrease size
@@ -62,7 +62,7 @@ node* extractMin(node* heap[])
 bool buildMinHeap(node* heap[])
 {
 	// get size of heap
-	int size = heap[0]->key;
+	int size = (int) heap[0]->key;
 	// minHeapify the rest of the heap
 	for (int i = floor(size / 2); i > 0; i--)
 	{
