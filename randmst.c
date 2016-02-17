@@ -38,6 +38,8 @@ int displayDim0(int numpoints, float edgeWeights[65536][65536]) {
 	return 0;
 }
 
+// enact prim's algorithm on a graph
+
 int main(int argc, char* argv[])
 {
 	// make sure format was correct

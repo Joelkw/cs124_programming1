@@ -44,11 +44,21 @@ bool minHeapify(int heap[], int i)
 	return true;
 }
 
-// builds a min tree in root
+// plucks an element from the top of the heap
+int extractMin(int heap[])
+{
+	int min = heap[1];
+	heap[1] = heap[heap[0]];
+	heap[0] = heap[0] - 1;
+	minHeapify(heap, 1);
+	return min;
+}
+
+// builds a min tree from root
 bool buildMinHeap(int heap[])
 {
 	// minHeapify the rest of the heap
-	for (int i = floor((SIZE - 1) / 2); i > 0; i--)
+	for (int i = floor(SIZE / 2); i > 0; i--)
 	{
 		minHeapify(heap, i);
 	}

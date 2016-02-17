@@ -11,3 +11,16 @@ bool minHeapify(int heap[], int i);
 bool buildMinHeap(int heap[]);
 
 #define SIZE 16
+
+typedef struct node
+{
+	int num;
+	int key;
+	struct node *parent;
+} node;
+
+typedef struct edge
+{
+	struct node *to;
+	float weight;
+} edge;
