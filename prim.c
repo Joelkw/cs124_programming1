@@ -8,13 +8,13 @@
 
 #include "header.h"
 
-float prim(node* nodes[5], float edges[5][5])
+float prim(int len, node* nodes[len+1], float edges[len+1][len+1])
 {
 	// heapify our nodes
 	buildMinHeap(nodes);
 
 	// create a forest to store our path
-	node* forest[4];
+	node* forest[len];
 
 	// while the queue is not empty, extract minimum node
 	int index = 0;
@@ -25,7 +25,7 @@ float prim(node* nodes[5], float edges[5][5])
 		// get number of node
 		int num = u->num;
 		// get edges still in queue & adjacent to u
-		for (int i = 1; i < 5 - index; i++)
+		for (int i = 1; i < len + 1 - index; i++)
 		{
 			// get node at ith place
 			node* nodeV = nodes[i];
@@ -45,7 +45,7 @@ float prim(node* nodes[5], float edges[5][5])
 
 	// find length of MST by summing up parent-kids in forest
 	float sum = 0;
-	for (int i = 0; i <= 3; i++)
+	for (int i = 0; i < len; i++)
 	{
 		node* u = forest[i];
 		printf("key %f at num %i\n", u->key, u->num);
@@ -53,7 +53,7 @@ float prim(node* nodes[5], float edges[5][5])
 	}
 
 	// free our edges and root
-	for (int i = 0; i < 4; i++)
+	for (int i = 0; i < len; i++)
 	{
 		free(forest[i]);
 	}

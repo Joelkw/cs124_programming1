@@ -52,8 +52,6 @@ int main(int argc, char* argv[])
 	// get our arguments
 	int flag = atoi(argv[1]);
 	int numpoints = atoi(argv[2]);
-	// for debugging purposes
-	numpoints = 4;
 	int numtrials = atoi(argv[3]);
 	int dimension = atoi(argv[4]);
 	printf("numpoints %d, numtrials %d, dimension %d, flag %d \r\n", 
@@ -183,7 +181,7 @@ int main(int argc, char* argv[])
 		}
 
 		// once we have generated all of our nodes and edges, run prim's!
-		float x = prim(nodes, edgeWeights);
+		float x = prim(numpoints, nodes, edgeWeights);
 	}
 
 	// end timing
