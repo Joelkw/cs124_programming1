@@ -167,6 +167,7 @@ int main(int argc, char* argv[])
 	// iterate through trials
 	for (int t = 0; t < numtrials; t++)
 	{
+		// create all of our nodes
 		for (int i = 0; i <= numpoints; i++)
 		{
 			nodes[i] = malloc(sizeof(node));
@@ -174,7 +175,6 @@ int main(int argc, char* argv[])
 			nodes[i]->key = 10 + i;
 			nodes[i]->parent = NULL;
 		}
-
 		// let the 0th node be the size of the heap
 		nodes[0]->key = numpoints;
 		// set the root's key to 0
