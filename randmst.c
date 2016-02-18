@@ -1,4 +1,5 @@
-// CS124 - programming assignment 1 - Joel Kwartler 
+// CS124 - Programming Assignment 1
+// Joel Kwartler & Arianna Benson
 
 // NOTES TO SELF
 
@@ -19,7 +20,6 @@ typedef struct node {
     int nodeIndex;
     struct node* next;
 } node;
-
 
 // returns a random float between 0 and 1 inclusive 
 float randNum() 
@@ -65,7 +65,7 @@ float dist3d(float x1, float y1, float z1, float x2, float y2, float z2)
 	return sqrt((x2-x1)*(x2-x1)+(y2-y1)*(y2-y1)+(z2-z1)*(z2-z1));
 }
 
-int main( int argc, char* argv[] )
+int main (int argc, char* argv[])
 {
 	// make sure format was correct
 	if (argc != 5)
@@ -73,18 +73,19 @@ int main( int argc, char* argv[] )
 		printf("wrong syntax; should be 'randmst 0 numpoints numtrials dimension\r\n'");
 		return 0;
 	}
+
 	// get our arguments
-	int flag = atoi(argv[0]);
+	int flag = atoi(argv[1]);
 	int numpoints = atoi(argv[2]);
 	int numtrials = atoi(argv[3]);
 	int dimension = atoi(argv[4]);
-	printf("numpoints %d, numtrials %d, dimension %d, flag %d \r\n", numpoints, numtrials, dimension, flag);
-	// seed the random, this should happen once
+	printf("numpoints %d, numtrials %d, dimension %d, flag %d \r\n", 
+		   numpoints, numtrials, dimension, flag);
+
+	// seed the random number generator
 	srand(time(NULL));
 
-
-	// start with a two dimensional graph with n vertices
-	// weight is a real chosen uniformly on [0,1]
+	// match on dimension type
 	if (dimension == 0)
 	{
 		// start timer
@@ -277,7 +278,4 @@ int main( int argc, char* argv[] )
  		// 	 printf("%d edge: %2.6f vertex: %d | ", i, graph[i]->dist, graph[i]->nodeIndex);
  		// }	
 	}
-
-
-
 }
