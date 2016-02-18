@@ -34,7 +34,7 @@ float prim(int len, node* nodes[len+1], float edges[len+1][len+1])
 			// if our weight is lower than node i's key
 			if (weight < nodeV->key)
 			{
-				printf("key from %f to %f\n", nodeV->key, weight);
+				// printf("key from %f to %f\n", nodeV->key, weight);
 				nodeV->parent = u;
 				nodeV->key = weight;
 			}
@@ -48,7 +48,7 @@ float prim(int len, node* nodes[len+1], float edges[len+1][len+1])
 	for (int i = 0; i < len; i++)
 	{
 		node* u = forest[i];
-		printf("key %f at num %i\n", u->key, u->num);
+		// printf("key %f at num %i\n", u->key, u->num);
 		sum += u->key;
 	}
 
