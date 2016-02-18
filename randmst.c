@@ -25,9 +25,49 @@ float randNum()
 	return randNum;
 }
 
+// generates 0-dimensional edge weights
+void gen0Dim(int len, float edgeWeights[len+1][len+1])
+{
+	// fill adjcacency matrix with edgeweights
+	for (int i = 1; i <= len; i++)
+	{
+		for (int j = 1; j <= len; j++)
+		{
+			edgeWeights[i][j] = randNum();
+			// ensure mirroring
+			edgeWeights[j][i] = edgeWeights[i][j]; 
+		}
+	}
+}
+
 float dist2d(float x1, float y1, float x2, float y2) 
 {
 	return sqrt((x2-x1)*(x2-x1)+(y2-y1)*(y2-y1));
+}
+
+// generates 2-dimensional edge weights
+void gen2Dim(int len, float edgeWeights[len+1][len+1])
+{
+	// a place for our x and y coordinates
+	float xs[len];
+	float ys[len];
+	// generate our points
+	for (int i = 1; i <= len; i++) 
+	{
+		xs[i] = randNum();
+		ys[i] = randNum();
+	}
+	// calculate all of our edges
+	for (int i = 1; i <= len; i++)
+	{
+		// j wil loop through other nodes
+		for (int j = 1; j <= len; j++)
+		{
+			edgeWeights[i][j] = dist2d(xs[i],ys[i],xs[j],ys[j]);
+			// ensure mirroring
+			edgeWeights[j][i] = edgeWeights[i][j];
+		}
+	}
 }
 
 float dist3d(float x1, float y1, float z1, float x2, float y2, float z2) 
@@ -35,9 +75,67 @@ float dist3d(float x1, float y1, float z1, float x2, float y2, float z2)
 	return sqrt((x2-x1)*(x2-x1)+(y2-y1)*(y2-y1)+(z2-z1)*(z2-z1));
 }
 
+// generates 3-dimensional edge weights
+void gen3Dim(int len, float edgeWeights[len+1][len+1])
+{
+	// a place for our x, y, and z coordinates
+	float xs[len];
+	float ys[len];
+	float zs[len];
+	// generate our points
+	for (int i = 1; i <= len; i++) 
+	{
+		xs[i] = randNum();
+		ys[i] = randNum();
+		zs[i] = randNum();
+	}
+	// calculate all of our edges
+	for (int i = 1; i < len; i++)
+	{
+		// j will loop through other nodes
+		for (int j = 1; j <= len; j++)
+		{
+			edgeWeights[i][j] = dist3d(xs[i],ys[i],zs[i],xs[j],ys[j],zs[j]);
+			// ensure mirroring
+			edgeWeights[j][i] = edgeWeights[i][j];
+		}
+	}
+}
+
 float dist4d(float x1, float y1, float z1, float t1, float x2, float y2, float z2, float t2) 
 {
 	return sqrt((x2-x1)*(x2-x1)+(y2-y1)*(y2-y1)+(z2-z1)*(z2-z1)+(t2-t1)*(t2-t1));
+}
+
+// generates 4-dimensional edge weights
+void gen4Dim(int len, float edgeWeights[len+1][len+1])
+{
+	// a place for our x, y, z, and t coordinates
+	float xs[len];
+	float ys[len];
+	float zs[len];
+	float ts[len];
+
+	// generate our points
+	for (int i = 1; i <= len; i++) 
+	{
+		xs[i] = randNum();
+		ys[i] = randNum();
+		zs[i] = randNum();
+		ts[i] = randNum();
+	}
+	// calculate all of our edges
+	for (int i = 1; i < len; i++)
+	{
+		// j will loop through other nodes
+		for (int j = 1; j <= len; j++)
+		{
+			edgeWeights[i][j] = dist4d(xs[i],ys[i],zs[i],ts[i],
+									   xs[j],ys[j],zs[j],ts[j]);
+			// ensure mirroring
+			edgeWeights[j][i] = edgeWeights[i][j];
+		}
+	}
 }
 
 int main(int argc, char* argv[])
@@ -88,96 +186,19 @@ int main(int argc, char* argv[])
 		// match on dimension type
 		if (dimension == 0)
 		{
-			// fill adjcacency matrix with edgeweights
-			for (int i = 1; i <= numpoints; i++)
-			{
-				for (int j = 1; j <= numpoints; j++)
-				{
-					edgeWeights[i][j] = randNum();
-					// ensure mirroring
-					edgeWeights[j][i] = edgeWeights[i][j]; 
-				}
-			}
+			gen0Dim(numpoints, edgeWeights);
 		}
-
-		if (dimension == 2) 
+		else if (dimension == 2) 
 		{
-			// a place for our x and y coordinates
-			float xs[numpoints];
-			float ys[numpoints];
-			// generate our points
-			for (int i = 1; i <= numpoints; i++) 
-			{
-				xs[i] = randNum();
-				ys[i] = randNum();
-			}
-			// calculate all of our edges
-			for (int i = 1; i <= numpoints; i++)
-			{
-				// j wil loop through other nodes
-				for (int j = 1; j <= numpoints; j++)
-				{
-					edgeWeights[i][j] = dist2d(xs[i],ys[i],xs[j],ys[j]);
-					// ensure mirroring
-					edgeWeights[j][i] = edgeWeights[i][j];
-				}
-			}
+			gen2Dim(numpoints, edgeWeights);
 		}
-
-		if (dimension == 3) 
+		else if (dimension == 3) 
 		{
-			// a place for our x, y, and z coordinates
-			float xs[numpoints];
-			float ys[numpoints];
-			float zs[numpoints];
-			// generate our points
-			for (int i = 1; i <= numpoints; i++) 
-			{
-				xs[i] = randNum();
-				ys[i] = randNum();
-				zs[i] = randNum();
-			}
-			// calculate all of our edges
-			for (int i = 1; i < numpoints; i++)
-			{
-				// j will loop through other nodes
-				for (int j = 1; j <= numpoints; j++)
-				{
-					edgeWeights[i][j] = dist3d(xs[i],ys[i],zs[i],xs[j],ys[j],zs[j]);
-					// ensure mirroring
-					edgeWeights[j][i] = edgeWeights[i][j];
-				}
-			}
+			gen3Dim(numpoints, edgeWeights);
 		}
-
-		if (dimension == 4) 
+		else
 		{
-			// a place for our x, y, and z coordinates
-			float xs[numpoints];
-			float ys[numpoints];
-			float zs[numpoints];
-			float ts[numpoints];
-
-			// generate our points
-			for (int i = 1; i <= numpoints; i++) 
-			{
-				xs[i] = randNum();
-				ys[i] = randNum();
-				zs[i] = randNum();
-				ts[i] = randNum();
-			}
-			// calculate all of our edges
-			for (int i = 1; i < numpoints; i++)
-			{
-				// j will loop through other nodes
-				for (int j = 1; j <= numpoints; j++)
-				{
-					edgeWeights[i][j] = dist4d(xs[i],ys[i],zs[i],ts[i],
-											   xs[j],ys[j],zs[j],ts[j]);
-					// ensure mirroring
-					edgeWeights[j][i] = edgeWeights[i][j];
-				}
-			}
+			gen4Dim(numpoints, edgeWeights);
 		}
 
 		// once we have generated all of our nodes and edges, run prim's!
