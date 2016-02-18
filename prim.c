@@ -24,7 +24,7 @@ float prim(int len, node* nodes[len+1], float edges[len+1][len+1])
 		node* u = extractMin(nodes);
 		// get number of node
 		int num = u->num;
-		// get edges still in queue & adjacent to u
+		// get nodes still in queue & adjacent to u
 		for (int i = 1; i < len + 1 - index; i++)
 		{
 			// get node at ith place
