@@ -33,7 +33,7 @@ void gen0Dim(int len, edge* edgeWeights[len+1])
 		for (int j = i; j <= len; j++)
 		{
 			float w = randNum();
-			if (w < 0.1)
+			if (w < 0.5)
 			{
 				// create our node, affix to beginning
 				edge* new = malloc(sizeof(edge));
