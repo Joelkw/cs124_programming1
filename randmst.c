@@ -10,13 +10,6 @@
 
 #include "header.h"
 
-// nodes for min heap eventually, linked list right now
-typedef struct llnode {
-    float dist;
-    int llnodeIndex;
-    struct llnode* next;
-} llnode;
-
 // returns a random float between 0 and 1 inclusive 
 float randNum() 
 {
