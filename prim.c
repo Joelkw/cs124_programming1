@@ -16,6 +16,13 @@ float prim(int len, node* nodes[len+1], edge* edges[len+1])
 	// create a forest to store our path
 	node* forest[len];
 
+	// make a copy of nodes, in order
+	node* master[len+1];
+	for (int i = 0; i <=len; i++)
+	{
+		master[nodes[i]->num] = nodes[i];
+	}
+
 	// while the queue is not empty, extract minimum node
 	int index = 0;
 	while(nodes[0]->key != 0)
@@ -40,18 +47,17 @@ float prim(int len, node* nodes[len+1], edge* edges[len+1])
 		for (edge* ptr = edges[num]; ptr != NULL; ptr = ptr->next)
 		{
 			float weight = ptr->weight;
-			node* nodeV = nodes[ptr->to];
+			node* nodeV = master[ptr->to];
 			// if weight is lower than other's key
-			printf("key from %i, %f to %f\n", nodeV->num, nodeV->key, weight);
-			printf("value: %d !!!", nodeV->inQueue);
-			// if we're in queue
+			printf("Node %i %i has key %f -> weight %f, and inQueue = %i\n",
+					ptr->to, nodeV->num, nodeV->key, weight, nodeV->inQueue);
+			// if we're in the queue
 			if (!nodeV->inQueue && weight < nodeV->key)
 			{
-				printf("ACTUAL SWITCH from %f to %f\n",
-						nodeV->key, weight);
+				printf("We made an actual switch from %f to %f\n", nodeV->key, weight);
 				nodeV->parent = u;
+				// percolate up....
 				nodeV->key = weight;
-				// reheapify
 			}
 		}
 		printf("Done with this iteration.\n");
