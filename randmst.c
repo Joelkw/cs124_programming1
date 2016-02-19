@@ -241,12 +241,12 @@ int main(int argc, char* argv[])
 		float x = prim(numpoints, nodes, edgeWeights);
 
 		//free
-			for (int i = 0; i < (newnp); ++i)
-		{
-		    free(edgeWeights[i]);
-		}
+		// 	for (int i = 0; i < (newnp); ++i)
+		// {
+		//     free(edgeWeights[i]);
+		// }
 
-		free(edgeWeights);
+		// free(edgeWeights);
 	}
 
 	// end timing
