@@ -13,9 +13,6 @@ float prim(int len, node* nodes[len+1], edge* edges[len+1])
 	// heapify our nodes
 	buildMinHeap(nodes);
 
-	// create a forest to store our path
-	node* forest[len];
-
 	// make a copy of nodes, in order
 	node* master[len+1];
 	for (int i = 0; i <=len; i++)
@@ -33,7 +30,7 @@ float prim(int len, node* nodes[len+1], edge* edges[len+1])
 		u->inQueue = false;
 		// get number of node
 		int num = u->num;
-		printf("Removed %i from queue\n", num);
+		printf("REMOVED %i FROM QUEUE\n", num);
 		// print out edges
 		edge* w = edges[num];
 		printf("Edges at %i: ", num);
@@ -52,32 +49,42 @@ float prim(int len, node* nodes[len+1], edge* edges[len+1])
 			printf("Node %i %i has key %f -> weight %f, and inQueue = %i\n",
 					ptr->to, nodeV->num, nodeV->key, weight, nodeV->inQueue);
 			// if we're in the queue
-			if (!nodeV->inQueue && weight < nodeV->key)
+			if (nodeV->inQueue && weight < nodeV->key)
 			{
 				printf("We made an actual switch from %f to %f\n", nodeV->key, weight);
 				nodeV->parent = u;
-				// percolate up....
+				// find location
+				int loc = 0;
+				for (int i = 1; i < len+1; i++)
+				{
+					if (nodes[i]->num == nodeV->num)
+					{
+						loc = i;
+					}
+				}
+				printf("Our node is at location %i in our heap\n", loc);
 				nodeV->key = weight;
+				// percolate up!!!
+				bubbleUp(nodes, loc);
 			}
 		}
 		printf("Done with this iteration.\n");
-		forest[index] = u;
 		index++;
 	}
 
-	// find length of MST by summing up parent-kids in forest
+	// find length of MST by summing up parent-kids in master
 	float sum = 0;
 	for (int i = 0; i < len; i++)
 	{
-		node* u = forest[i];
+		node* u = master[i];
 		printf("key %f at num %i\n", u->key, u->num);
 		sum += u->key;
 	}
 
 	// free our edges and root
-	for (int i = 0; i < len; i++)
+	for (int i = 1; i < len; i++)
 	{
-		free(forest[i]);
+		free(master[i]);
 	}
 	free(nodes[0]);
 

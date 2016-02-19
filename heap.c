@@ -47,6 +47,32 @@ bool minHeapify(node* heap[], int i)
 	return true;
 }
 
+// gets parent of a child
+int getParent(int index)
+{
+	if (index % 2 == 1)
+	{
+		return (index - 1) / 2;
+	}
+	return index / 2;
+}
+
+// bubbles up an element
+void bubbleUp(node* heap[], int index)
+{
+	printf("BUBBLING UP %i\n", heap[index]->num);
+	// get parent location
+	int parent = getParent(index);
+	// swap upwards while needed
+	while (index > 1 && heap[parent]->key > heap[index]->key)
+	{
+		node* temp = heap[index];
+		heap[index] = heap[parent];
+		heap[parent] = temp;
+		index = parent;
+	}
+}
+
 // plucks an element from the top of the heap
 node* extractMin(node* heap[])
 {

@@ -26,5 +26,6 @@ typedef struct edge
 void printHeap(node* heap[]);
 bool minHeapify(node* heap[], int i);
 bool buildMinHeap(node* heap[]);
+void bubbleUp(node* heap[], int index);
 node* extractMin(node* heap[]);
 float prim(int len, node* nodes[len+1], edge* edges[len+1]);
