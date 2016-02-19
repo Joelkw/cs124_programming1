@@ -21,12 +21,12 @@ float randNum()
 // generates 0-dimensional edge weights
 void gen0Dim(int len, edge* edgeWeights[len+1])
 {
-	// generate some null
+	// generate some nulls
 	for (int i = 1; i <= len; i++)
 	{
 		edgeWeights[i] = NULL;
 	}
-	// fill adjcacency matrix with edgeweights
+	// fill array of linked lists with edgeweights
 	for (int i = 1; i <= len; i++)
 	{
 		edge* root = edgeWeights[i];
@@ -59,7 +59,7 @@ float dist2d(float x1, float y1, float x2, float y2)
 }
 
 // generates 2-dimensional edge weights
-void gen2Dim(int len, float edgeWeights[len+1][len+1])
+void gen2Dim(int len, edge* edgeWeights[len+1])
 {
 	// a place for our x and y coordinates
 	float xs[len];
@@ -70,15 +70,31 @@ void gen2Dim(int len, float edgeWeights[len+1][len+1])
 		xs[i] = randNum();
 		ys[i] = randNum();
 	}
-	// calculate all of our edges
+	// generate some nulls
 	for (int i = 1; i <= len; i++)
 	{
+		edgeWeights[i] = NULL;
+	}
+	// fill array of linked lists with edgeweights
+	for (int i = 1; i <= len; i++)
+	{
+		edge* root = edgeWeights[i];
 		// j wil loop through other nodes
-		for (int j = 1; j <= len; j++)
+		for (int j = i; j <= len; j++)
 		{
-			edgeWeights[i][j] = dist2d(xs[i],ys[i],xs[j],ys[j]);
+			float w = dist2d(xs[i],ys[i],xs[j],ys[j]);
+			// create our node, affix to beginning
+			edge* new = malloc(sizeof(edge));
+			new->to = j;
+			new->weight = w;
+			new->next = root;
+			root = new;
 			// ensure mirroring
-			edgeWeights[j][i] = edgeWeights[i][j];
+			edge* new2 = malloc(sizeof(edge));
+			new2->to = i;
+			new2->weight = new->weight;
+			new2->next = edgeWeights[j];
+			edgeWeights[j] = new2;
 		}
 	}
 }
@@ -89,7 +105,7 @@ float dist3d(float x1, float y1, float z1, float x2, float y2, float z2)
 }
 
 // generates 3-dimensional edge weights
-void gen3Dim(int len, float edgeWeights[len+1][len+1])
+void gen3Dim(int len, edge* edgeWeights[len+1])
 {
 	// a place for our x, y, and z coordinates
 	float xs[len];
@@ -102,15 +118,31 @@ void gen3Dim(int len, float edgeWeights[len+1][len+1])
 		ys[i] = randNum();
 		zs[i] = randNum();
 	}
-	// calculate all of our edges
-	for (int i = 1; i < len; i++)
+	// generate some nulls
+	for (int i = 1; i <= len; i++)
 	{
+		edgeWeights[i] = NULL;
+	}
+	// fill array of linked lists with edgeweights
+	for (int i = 1; i <= len; i++)
+	{
+		edge* root = edgeWeights[i];
 		// j will loop through other nodes
-		for (int j = 1; j <= len; j++)
+		for (int j = i; j <= len; j++)
 		{
-			edgeWeights[i][j] = dist3d(xs[i],ys[i],zs[i],xs[j],ys[j],zs[j]);
+			float w = dist3d(xs[i],ys[i],zs[i],xs[j],ys[j],zs[j]);
+			// create our node, affix to beginning
+			edge* new = malloc(sizeof(edge));
+			new->to = j;
+			new->weight = w;
+			new->next = root;
+			root = new;
 			// ensure mirroring
-			edgeWeights[j][i] = edgeWeights[i][j];
+			edge* new2 = malloc(sizeof(edge));
+			new2->to = i;
+			new2->weight = new->weight;
+			new2->next = edgeWeights[j];
+			edgeWeights[j] = new2;
 		}
 	}
 }
@@ -121,7 +153,7 @@ float dist4d(float x1, float y1, float z1, float t1, float x2, float y2, float z
 }
 
 // generates 4-dimensional edge weights
-void gen4Dim(int len, float edgeWeights[len+1][len+1])
+void gen4Dim(int len, edge* edgeWeights[len+1])
 {
 	// a place for our x, y, z, and t coordinates
 	float xs[len];
@@ -137,16 +169,32 @@ void gen4Dim(int len, float edgeWeights[len+1][len+1])
 		zs[i] = randNum();
 		ts[i] = randNum();
 	}
-	// calculate all of our edges
-	for (int i = 1; i < len; i++)
+	// generate some nulls
+	for (int i = 1; i <= len; i++)
 	{
+		edgeWeights[i] = NULL;
+	}
+	// fill array of linked lists with edgeweights
+	for (int i = 1; i <= len; i++)
+	{
+		edge* root = edgeWeights[i];
 		// j will loop through other nodes
-		for (int j = 1; j <= len; j++)
+		for (int j = i; j <= len; j++)
 		{
-			edgeWeights[i][j] = dist4d(xs[i],ys[i],zs[i],ts[i],
-									   xs[j],ys[j],zs[j],ts[j]);
+			float w = dist4d(xs[i],ys[i],zs[i],ts[i],
+						     xs[j],ys[j],zs[j],ts[j]);
+			// create our node, affix to beginning
+			edge* new = malloc(sizeof(edge));
+			new->to = j;
+			new->weight = w;
+			new->next = root;
+			root = new;
 			// ensure mirroring
-			edgeWeights[j][i] = edgeWeights[i][j];
+			edge* new2 = malloc(sizeof(edge));
+			new2->to = i;
+			new2->weight = new->weight;
+			new2->next = edgeWeights[j];
+			edgeWeights[j] = new2;
 		}
 	}
 }
@@ -203,7 +251,6 @@ int main(int argc, char* argv[])
 		{
 			gen0Dim(numpoints, edgeWeights);
 		}
-		/*
 		else if (dimension == 2) 
 		{
 			gen2Dim(numpoints, edgeWeights);
@@ -215,7 +262,7 @@ int main(int argc, char* argv[])
 		else
 		{
 			gen4Dim(numpoints, edgeWeights);
-		} */
+		} 
 
 		// print edges
 		/* for (int i = 1; i <= numpoints; i++)
