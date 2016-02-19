@@ -181,7 +181,43 @@ int main(int argc, char* argv[])
 		nodes[1]->key = 0;
 
 		// create adjacency matrix for edgeweights
-		float edgeWeights[numpoints+1][numpoints+1];
+		//float edgeWeights[numpoints+1][numpoints+1];
+		// one implementation
+	 // 	float** edgeWeights = malloc(sizeof(float*) * (numpoints+1));
+
+		// for (int i = 0; i < (numpoints+1); ++i)
+		// {
+		//     edgeWeights[i] = malloc(sizeof(float) * (numpoints+1));
+		// }
+
+		// or
+
+		//float (*edgeWeights)[(numpoints+1)] = malloc((numpoints+1)*(numpoints+1));
+
+		// or 
+		// save us some calculating and writing;
+		int newnp = (numpoints + 1);
+
+		float** edgeWeights;
+
+		if (( edgeWeights = malloc( (newnp)*sizeof( float* ))) == NULL )
+		{ /* error */ }
+
+		for (int i = 0; i < newnp ; i++ )
+		{
+		  /* x_i here is the size of given row, no need to
+		   * multiply by sizeof( char ), it's always 1
+		   */
+		  if (( edgeWeights[i] = malloc( sizeof(float) * newnp) ) == NULL )
+		  { /* error */ }
+
+		  /* probably init the row here */
+		}
+
+		/* access matrix elements: c[i] give you a pointer
+		 * to the row array, c[i][j] indexes an element
+		 */
+		//c[i][j] = 'a';
 
 		// match on dimension type
 		if (dimension == 0)
@@ -203,6 +239,14 @@ int main(int argc, char* argv[])
 
 		// once we have generated all of our nodes and edges, run prim's!
 		float x = prim(numpoints, nodes, edgeWeights);
+
+		//free
+			for (int i = 0; i < (newnp); ++i)
+		{
+		    free(edgeWeights[i]);
+		}
+
+		free(edgeWeights);
 	}
 
 	// end timing
@@ -212,4 +256,6 @@ int main(int argc, char* argv[])
 	// output results
 	printf("%i trials of dim%i with %i points took %d seconds and %d milliseconds \n",
 			numtrials, dimension, numpoints, msec/1000, msec%1000);
+
+	
 }
