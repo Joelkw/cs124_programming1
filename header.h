@@ -24,7 +24,7 @@ typedef struct llnode {
 
 
 void printHeap(node* heap[]);
-bool minHeapify(node* heap[], int i);
-bool buildMinHeap(node* heap[]);
-node* extractMin(node* heap[]);
-float prim(int len, node* nodes[len], float edges[len][len]);
+bool minHeapify(node* heap[], int i, node* masterKeys[]);
+bool buildMinHeap(node* heap[], node* masterKeys[]);
+node* extractMin(node* heap[], node* masterKeys[]);
+float prim(int len, node* nodes[len], llnode* edgesMatrix[], node* masterKeys[]);

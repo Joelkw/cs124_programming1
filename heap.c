@@ -20,7 +20,7 @@ void printHeap(node* heap[])
 }
 
 // inserts an element into a heap
-bool minHeapify(node* heap[], int i)
+bool minHeapify(node* heap[], int i, node* masterKeys[])
 {
 	int smallest;
 	// find location of left and right children
@@ -42,16 +42,16 @@ bool minHeapify(node* heap[], int i)
 		heap[i] = heap[smallest];
 		heap[smallest] = temp;
 		// update master keys
-		masterKeys[(heap[i]->num)] = &heap[i];
-		masterKeys[(heap[smallest]->num)] = &heap[smallest];
+		masterKeys[(heap[i]->num)] = heap[i];
+		masterKeys[(heap[smallest]->num)] = heap[smallest];
 		// minHeapify the rest
-		minHeapify(heap, smallest);
+		minHeapify(heap, smallest, masterKeys);
 	}
 	return true;
 }
 
 // plucks an element from the top of the heap
-node* extractMin(node* heap[])
+node* extractMin(node* heap[], node* masterKeys[])
 {
 	int size = (int) heap[0]->key;
 	// swap ending node into start of heap
@@ -60,20 +60,20 @@ node* extractMin(node* heap[])
 	// decrease size
 	heap[0]->key = size - 1;
 	// balance our heap
-	minHeapify(heap, 1);
+	minHeapify(heap, 1, masterKeys);
 	// return node
 	return min;
 }
 
 // builds a min tree from root
-bool buildMinHeap(node* heap[])
+bool buildMinHeap(node* heap[], node* masterKeys[])
 {
 	// get size of heap
 	int size = (int) heap[0]->key;
 	// minHeapify the rest of the heap
 	for (int i = floor(size / 2); i > 0; i--)
 	{
-		minHeapify(heap, i);
+		minHeapify(heap, i, masterKeys);
 	}
 	return true;
 }

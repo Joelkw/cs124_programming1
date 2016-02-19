@@ -26,7 +26,7 @@ float randNum()
 }
 
 // generates 0-dimensional edge weights
-void gen0Dim(int len, llnode* edgesMatrix[len+1], node* nodes)
+void gen0Dim(int len, llnode* edgesMatrix[len+1], node* nodes, node* masterKeys[len+1])
 {
 	// to mirror weights:
 		int newnp = (len + 1);
@@ -248,7 +248,7 @@ int main(int argc, char* argv[])
 			nodes[i]->key = 10 + i;
 			nodes[i]->parent = NULL;
 			masterKeys[i] = malloc(sizeof(node));
-			masterKeys[i] = &nodes[i];
+			masterKeys[i] = nodes[i];
 		}
 		// let the 0th node be the size of the heap
 		nodes[0]->key = numpoints;
@@ -256,7 +256,7 @@ int main(int argc, char* argv[])
 		nodes[1]->key = 0;
 
 		// create a matrix of lls for edges and weights
-		llnode* edgesMatrix = malloc(sizeof(llnode*)*(numpoints+1))
+		llnode* edgesMatrix = malloc(sizeof(llnode*)*(numpoints+1));
 
 		// create adjacency matrix for edgeweights
 		//float edgeWeights[numpoints+1][numpoints+1];
@@ -302,21 +302,21 @@ int main(int argc, char* argv[])
 		{
 			gen0Dim(numpoints, edgesMatrix, nodes, masterKeys);
 		}
-		else if (dimension == 2) 
-		{
-			gen2Dim(numpoints, edgeWeights);
-		}
-		else if (dimension == 3) 
-		{
-			gen3Dim(numpoints, edgeWeights);
-		}
-		else
-		{
-			gen4Dim(numpoints, edgeWeights);
-		}
+		// else if (dimension == 2) 
+		// {
+		// 	gen2Dim(numpoints, edgeWeights);
+		// }
+		// else if (dimension == 3) 
+		// {
+		// 	gen3Dim(numpoints, edgeWeights);
+		// }
+		// else
+		// {
+		// 	gen4Dim(numpoints, edgeWeights);
+		// }
 
 		// once we have generated all of our nodes and edges, run prim's!
-		float x = prim(numpoints, nodes, edgesMatrix);
+		float x = prim(numpoints, nodes, edgesMatrix, masterKeys);
 
 		//free
 		// 	for (int i = 0; i < (newnp); ++i)

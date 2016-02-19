@@ -11,7 +11,7 @@
 float prim(int len, node* nodes[len+1], llnode* edgesMatrix[len+1], node* masterKeys[len+1])
 {
 	// heapify our nodes
-	buildMinHeap(nodes);
+	buildMinHeap(nodes, masterKeys);
 
 	// create a forest to store our path
 	node* forest[len];
@@ -21,7 +21,7 @@ float prim(int len, node* nodes[len+1], llnode* edgesMatrix[len+1], node* master
 	while(nodes[0]->key != 0)
 	{
 		// get minimum node that is NOT in our tree so far
-		node* u = extractMin(nodes);
+		node* u = extractMin(nodes, masterKeys);
 		// get number of node
 		int num = u->num;
 
@@ -33,14 +33,14 @@ float prim(int len, node* nodes[len+1], llnode* edgesMatrix[len+1], node* master
 			float weight = ptr->edgeWeight;
 
 			// get its name/number
-			float nodeV = ptr->num;
+			int nodeV = ptr->num;
 
 			// if our weight is lower than it's key
 			// NEED SOME MASTER POINTER THING, then change it and then continue;
-			if (weight < ((&masterKeys[nodeV])->key))
+			if (weight < ((masterKeys[nodeV])->key))
 			{
-				(&masterKeys[nodeV])->parent = u;
-				(&masterKeys[nodeV])->key = weight;
+				(masterKeys[nodeV])->parent = u;
+				(masterKeys[nodeV])->key = weight;
 
 			}
 
