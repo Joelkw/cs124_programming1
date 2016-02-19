@@ -10,6 +10,8 @@
 
 float prim(int len, node* nodes[len+1], edge* edges[len+1])
 {
+	int order[len+5];
+	int x = 0;
 	// heapify our nodes
 	buildMinHeap(nodes);
 
@@ -30,7 +32,9 @@ float prim(int len, node* nodes[len+1], edge* edges[len+1])
 		u->inQueue = false;
 		// get number of node
 		int num = u->num;
-		printf("REMOVED %i FROM QUEUE\n", num);
+		printf("\n\n REMOVED %i FROM QUEUE\n", num);
+		order[x] = num;
+		x++;
 		// print out edges
 		edge* w = edges[num];
 		printf("Edges at %i: ", num);
@@ -55,14 +59,14 @@ float prim(int len, node* nodes[len+1], edge* edges[len+1])
 				nodeV->parent = u;
 				// find location
 				int loc = 0;
-				for (int i = 1; i < len+1; i++)
+				for (int i = 1; i < nodes[0]->key; i++)
 				{
 					if (nodes[i]->num == nodeV->num)
 					{
 						loc = i;
 					}
 				}
-				printf("Our node is at location %i in our heap\n", loc);
+				printf("Node %i is at location %i in our heap\n", nodeV->num, loc);
 				nodeV->key = weight;
 				// percolate up!!!
 				bubbleUp(nodes, loc);
@@ -71,6 +75,12 @@ float prim(int len, node* nodes[len+1], edge* edges[len+1])
 		printf("Done with this iteration.\n");
 		index++;
 	}
+
+	for (int i = 0; i < len + 5; i++)
+	{
+		printf("%i ", order[i]);
+	}
+	printf("\n");
 
 	// find length of MST by summing up parent-kids in master
 	float sum = 0;
