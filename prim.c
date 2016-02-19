@@ -26,25 +26,35 @@ float prim(int len, node* nodes[len+1], edge* edges[len+1])
 		u->inQueue = false;
 		// get number of node
 		int num = u->num;
-		edge* ptr = edges[num];
+		printf("Removed %i from queue\n", num);
+		// print out edges
+		edge* w = edges[num];
+		printf("Edges at %i: ", num);
+		while (w != NULL)
+		{
+			printf("%f ", w->weight);
+			w = w->next;
+		}
+		printf("\nLook at adjacent edges...\n");
 		// get edges adjacent to u
-		while (ptr != NULL)
+		for (edge* ptr = edges[num]; ptr != NULL; ptr = ptr->next)
 		{
 			float weight = ptr->weight;
 			node* nodeV = nodes[ptr->to];
 			// if weight is lower than other's key
-				printf("key from %f to %f\n",
-						nodeV->key, weight);
+			printf("key from %i, %f to %f\n", nodeV->num, nodeV->key, weight);
+			printf("value: %d !!!", nodeV->inQueue);
+			// if we're in queue
 			if (!nodeV->inQueue && weight < nodeV->key)
 			{
-				printf("key from %f to %f\n",
+				printf("ACTUAL SWITCH from %f to %f\n",
 						nodeV->key, weight);
 				nodeV->parent = u;
 				nodeV->key = weight;
+				// reheapify
 			}
-			ptr = ptr->next;
 		}
-		printf("hello\n");
+		printf("Done with this iteration.\n");
 		forest[index] = u;
 		index++;
 	}

@@ -21,17 +21,23 @@ float randNum()
 // generates 0-dimensional edge weights
 void gen0Dim(int len, edge* edgeWeights[len+1])
 {
+	// generate some null
+	for (int i = 1; i <= len; i++)
+	{
+		edgeWeights[i] = NULL;
+	}
 	// fill adjcacency matrix with edgeweights
 	for (int i = 1; i <= len; i++)
 	{
-		edge* root = malloc(sizeof(edge));
-		for (int j = 1; j <= len; j++)
+		edge* root = edgeWeights[i];
+		for (int j = i; j <= len; j++)
 		{
 			// create our node, affix to beginning
 			edge* new = malloc(sizeof(edge));
 			new->to = j;
 			new->weight = randNum();
 			new->next = root;
+			root = new;
 			// ensure mirroring
 			edge* new2 = malloc(sizeof(edge));
 			new2->to = i;
@@ -205,6 +211,16 @@ int main(int argc, char* argv[])
 		{
 			gen4Dim(numpoints, edgeWeights);
 		} */
+
+		// print edges
+		for (int i = 1; i <= numpoints; i++)
+		{
+			for (edge* ptr = edgeWeights[i]; ptr != NULL; ptr = ptr->next)
+			{
+				printf("%f ", ptr->weight);
+			}
+			printf("\n");
+		}
 
 		// once we have generated all of our nodes and edges, run prim's!
 		float x = prim(numpoints, nodes, edgeWeights);
