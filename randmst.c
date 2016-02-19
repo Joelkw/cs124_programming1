@@ -31,6 +31,7 @@ void gen0Dim(int len, edge* edgeWeights[len+1])
 			edge* new = malloc(sizeof(edge));
 			new->to = j;
 			new->weight = randNum();
+			printf("weight is %f\n", new->weight);
 			new->next = root;
 			// ensure mirroring
 			edge* new2 = malloc(sizeof(edge));
@@ -177,7 +178,7 @@ int main(int argc, char* argv[])
 			nodes[i]->num = i;
 			nodes[i]->key = 10 + i;
 			nodes[i]->parent = NULL;
-			nodes[i]->inQueue = false;
+			nodes[i]->inQueue = true;
 		}
 		// let the 0th node be the size of the heap
 		nodes[0]->key = numpoints;

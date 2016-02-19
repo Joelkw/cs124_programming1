@@ -33,7 +33,9 @@ float prim(int len, node* nodes[len+1], edge* edges[len+1])
 			float weight = ptr->weight;
 			node* nodeV = nodes[ptr->to];
 			// if weight is lower than other's key
-			if (nodeV->inQueue && weight < nodeV->key)
+				printf("key from %f to %f\n",
+						nodeV->key, weight);
+			if (!nodeV->inQueue && weight < nodeV->key)
 			{
 				printf("key from %f to %f\n",
 						nodeV->key, weight);
