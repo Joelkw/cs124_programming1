@@ -8,7 +8,7 @@
 
 #include "header.h"
 
-float prim(int len, node* nodes[len+1], float edges[len+1][len+1])
+float prim(int len, node* nodes[len+1], edge* edges[len+1])
 {
 	// heapify our nodes
 	buildMinHeap(nodes);
@@ -22,23 +22,27 @@ float prim(int len, node* nodes[len+1], float edges[len+1][len+1])
 	{
 		// get minimum node
 		node* u = extractMin(nodes);
+		// take u out of queue
+		u->inQueue = false;
 		// get number of node
 		int num = u->num;
-		// get nodes still in queue & adjacent to u
-		for (int i = 1; i < len + 1 - index; i++)
+		edge* ptr = edges[num];
+		// get edges adjacent to u
+		while (ptr != NULL)
 		{
-			// get node at ith place
-			node* nodeV = nodes[i];
-			// get weight from node i to u
-			float weight = edges[num][nodeV->num];
-			// if our weight is lower than node i's key
-			if (weight < nodeV->key)
+			float weight = ptr->weight;
+			node* nodeV = nodes[ptr->to];
+			// if weight is lower than other's key
+			if (nodeV->inQueue && weight < nodeV->key)
 			{
-				printf("key from %f to %f\n", nodeV->key, weight);
+				printf("key from %f to %f\n",
+						nodeV->key, weight);
 				nodeV->parent = u;
 				nodeV->key = weight;
 			}
+			ptr = ptr->next;
 		}
+
 		forest[index] = u;
 		index++;
 	}

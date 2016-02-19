@@ -13,10 +13,18 @@ typedef struct node
 	int num;
 	float key;
 	struct node *parent;
+	bool inQueue;
 } node;
+
+typedef struct edge
+{
+	int to;
+	float weight;
+	struct edge *next;
+} edge;
 
 void printHeap(node* heap[]);
 bool minHeapify(node* heap[], int i);
 bool buildMinHeap(node* heap[]);
 node* extractMin(node* heap[]);
-float prim(int len, node* nodes[len], float edges[len][len]);
+float prim(int len, node* nodes[len+1], edge* edges[len+1]);
