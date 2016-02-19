@@ -32,28 +32,34 @@ float prim(int len, node* nodes[len+1], llnode* edgesMatrix[len+1], node* master
 			// get the node adjacent to it and its edge
 			float weight = ptr->edgeWeight;
 
-			// get its name
-			float nodeV = ptr->nodeName;
+			// get its name/number
+			float nodeV = ptr->num;
 
 			// if our weight is lower than it's key
 			// NEED SOME MASTER POINTER THING, then change it and then continue;
+			if (weight < ((&masterKeys[nodeV])->key))
+			{
+				(&masterKeys[nodeV])->parent = u;
+				(&masterKeys[nodeV])->key = weight;
+
+			}
 
 		}
 		// this was the old loop
-		for (int i = 1; i < len + 1 - index; i++)
-		{
-			// get node at ith place that is adjacent to u, which is not in the tree
-			node* nodeV = nodes[i];
-			// get weight from node i to u
-			float weight = edgesMatrix;
-			// if our weight is lower than node i's key
-			if (weight < nodeV->key)
-			{
-				// printf("key from %f to %f\n", nodeV->key, weight);
-				nodeV->parent = u;
-				nodeV->key = weight;
-			}
-		}
+		// for (int i = 1; i < len + 1 - index; i++)
+		// {
+		// 	// get node at ith place that is adjacent to u, which is not in the tree
+		// 	node* nodeV = nodes[i];
+		// 	// get weight from node i to u
+		// 	float weight = edgesMatrix;
+		// 	// if our weight is lower than node i's key
+		// 	if (weight < nodeV->key)
+		// 	{
+		// 		// printf("key from %f to %f\n", nodeV->key, weight);
+		// 		nodeV->parent = u;
+		// 		nodeV->key = weight;
+		// 	}
+		// }
 		forest[index] = u;
 		index++;
 	}

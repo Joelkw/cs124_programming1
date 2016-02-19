@@ -28,6 +28,26 @@ float randNum()
 // generates 0-dimensional edge weights
 void gen0Dim(int len, llnode* edgesMatrix[len+1], node* nodes)
 {
+	// to mirror weights:
+		int newnp = (len + 1);
+
+		float** mirrorWeights;
+
+		if (( mirrorWeights = malloc( (newnp)*sizeof( float* ))) == NULL )
+		{ 
+			exit(1);
+		}
+
+		for (int i = 0; i < newnp ; i++ )
+		{
+		   
+		  if (( mirrorWeights[i] = malloc( sizeof(float) * newnp) ) == NULL )
+		  { 
+		  	exit(1);
+		  }
+		}
+
+
 	// fill adjcacency matrix with edgeweights
 	// first, get index into the matrix
 	for (int i = 1; i <= len; i++)
@@ -50,6 +70,13 @@ void gen0Dim(int len, llnode* edgesMatrix[len+1], node* nodes)
 
 			// possible edge
 			float edge = randNum();
+
+			// if we saw the edge before
+			if (j < i)
+			{
+				edge = mirrorWeights[j][i];
+			}
+			
 			// 1 is where k(n) goes
 			if (edge < 1.0 )
 			{
@@ -62,9 +89,26 @@ void gen0Dim(int len, llnode* edgesMatrix[len+1], node* nodes)
 				newEdge->num = j;
 				newEdge->next = edgesMatrix[i];
 				edgesMatrix[i] = newEdge;
+				// we need this to mirror
+				mirrorWeights[i][j] = edge;
+			}
+			else
+			{
+				// we should save it anyway to avoid null errors above
+				mirrorWeights[i][j] = edge;
+				// this can probably be optimized and should be checked
 			}
 		}
+
 	}
+
+	// free it all
+	for (int i = 0; i < newnp ; i++ )
+	{
+		free(mirrorWeights[i]);
+	}
+	free (mirrorWeights);
+
 }
 
 float dist2d(float x1, float y1, float x2, float y2) 
