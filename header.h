@@ -14,6 +14,7 @@ typedef struct node
 	float key;
 	struct node *parent;
 	bool inQueue;
+	int loc;
 } node;
 
 typedef struct edge

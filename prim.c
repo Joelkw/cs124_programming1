@@ -32,62 +32,53 @@ float prim(int len, node* nodes[len+1], edge* edges[len+1])
 		u->inQueue = false;
 		// get number of node
 		int num = u->num;
-		printf("\n\n REMOVED %i FROM QUEUE\n", num);
+		//printf("\n\n REMOVED %i FROM QUEUE\n", num);
 		order[x] = num;
 		x++;
 		// print out edges
 		edge* w = edges[num];
-		printf("Edges at %i: ", num);
+		//printf("Edges at %i: ", num);
 		while (w != NULL)
 		{
-			printf("%f ", w->weight);
+			//printf("%f ", w->weight);
 			w = w->next;
 		}
-		printf("\nLook at adjacent edges...\n");
+		//printf("\nLook at adjacent edges...\n");
 		// get edges adjacent to u
 		for (edge* ptr = edges[num]; ptr != NULL; ptr = ptr->next)
 		{
 			float weight = ptr->weight;
 			node* nodeV = master[ptr->to];
 			// if weight is lower than other's key
-			printf("Node %i %i has key %f -> weight %f, and inQueue = %i\n",
-					ptr->to, nodeV->num, nodeV->key, weight, nodeV->inQueue);
+			//printf("Node %i %i has key %f -> weight %f, and inQueue = %i\n",
+					//ptr->to, nodeV->num, nodeV->key, weight, nodeV->inQueue);
 			// if we're in the queue
 			if (nodeV->inQueue && weight < nodeV->key)
 			{
-				printf("We made an actual switch from %f to %f\n", nodeV->key, weight);
+				//printf("We made an actual switch from %f to %f\n", nodeV->key, weight);
 				nodeV->parent = u;
-				// find location
-				int loc = 0;
-				for (int i = 1; i < nodes[0]->key; i++)
-				{
-					if (nodes[i]->num == nodeV->num)
-					{
-						loc = i;
-					}
-				}
-				printf("Node %i is at location %i in our heap\n", nodeV->num, loc);
+				//printf("Node %i is at location %i in our heap\n", nodeV->num, nodeV->loc);
 				nodeV->key = weight;
 				// percolate up!!!
-				bubbleUp(nodes, loc);
+				bubbleUp(nodes, nodeV->loc);
 			}
 		}
-		printf("Done with this iteration.\n");
+		//printf("Done with this iteration.\n");
 		index++;
 	}
 
-	for (int i = 0; i < len + 5; i++)
+	for (int i = 0; i < len; i++)
 	{
-		printf("%i ", order[i]);
+		//printf("%i ", order[i]);
 	}
-	printf("\n");
+	//printf("\n");
 
 	// find length of MST by summing up parent-kids in master
 	float sum = 0;
 	for (int i = 0; i < len; i++)
 	{
 		node* u = master[i];
-		printf("key %f at num %i\n", u->key, u->num);
+		//printf("key %f at num %i\n", u->key, u->num);
 		sum += u->key;
 	}
 

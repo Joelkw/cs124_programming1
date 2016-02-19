@@ -32,18 +32,22 @@ void gen0Dim(int len, edge* edgeWeights[len+1])
 		edge* root = edgeWeights[i];
 		for (int j = i; j <= len; j++)
 		{
-			// create our node, affix to beginning
-			edge* new = malloc(sizeof(edge));
-			new->to = j;
-			new->weight = randNum();
-			new->next = root;
-			root = new;
-			// ensure mirroring
-			edge* new2 = malloc(sizeof(edge));
-			new2->to = i;
-			new2->weight = new->weight;
-			new2->next = edgeWeights[j];
-			edgeWeights[j] = new2;
+			float w = randNum();
+			if (w < 0.1)
+			{
+				// create our node, affix to beginning
+				edge* new = malloc(sizeof(edge));
+				new->to = j;
+				new->weight = w;
+				new->next = root;
+				root = new;
+				// ensure mirroring
+				edge* new2 = malloc(sizeof(edge));
+				new2->to = i;
+				new2->weight = new->weight;
+				new2->next = edgeWeights[j];
+				edgeWeights[j] = new2;
+			}
 		}
 		edgeWeights[i] = root;
 	}
@@ -184,6 +188,7 @@ int main(int argc, char* argv[])
 			nodes[i]->key = 10 + i;
 			nodes[i]->parent = NULL;
 			nodes[i]->inQueue = true;
+			nodes[i]->loc = i;
 		}
 		// let the 0th node be the size of the heap
 		nodes[0]->key = numpoints;
@@ -213,14 +218,14 @@ int main(int argc, char* argv[])
 		} */
 
 		// print edges
-		for (int i = 1; i <= numpoints; i++)
+		/* for (int i = 1; i <= numpoints; i++)
 		{
 			for (edge* ptr = edgeWeights[i]; ptr != NULL; ptr = ptr->next)
 			{
 				printf("%f ", ptr->weight);
 			}
 			printf("\n");
-		}
+		} */
 
 		// once we have generated all of our nodes and edges, run prim's!
 		float x = prim(numpoints, nodes, edgeWeights);
