@@ -15,6 +15,14 @@ typedef struct node
 	struct node *parent;
 } node;
 
+// items in our linked list of nodes for the edge matrix of linked lists
+typedef struct llnode {
+    float edgeWeight;
+    int num;
+    struct llnode* next;
+} llnode;
+
+
 void printHeap(node* heap[]);
 bool minHeapify(node* heap[], int i);
 bool buildMinHeap(node* heap[]);

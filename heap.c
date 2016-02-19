@@ -41,6 +41,9 @@ bool minHeapify(node* heap[], int i)
 		node* temp = heap[i];
 		heap[i] = heap[smallest];
 		heap[smallest] = temp;
+		// update master keys
+		masterKeys[(heap[i]->num)] = &heap[i];
+		masterKeys[(heap[smallest]->num)] = &heap[smallest];
 		// minHeapify the rest
 		minHeapify(heap, smallest);
 	}

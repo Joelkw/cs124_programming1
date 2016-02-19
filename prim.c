@@ -8,7 +8,7 @@
 
 #include "header.h"
 
-float prim(int len, node* nodes[len+1], float edges[len+1][len+1])
+float prim(int len, node* nodes[len+1], llnode* edgesMatrix[len+1], node* masterKeys[len+1])
 {
 	// heapify our nodes
 	buildMinHeap(nodes);
@@ -20,17 +20,32 @@ float prim(int len, node* nodes[len+1], float edges[len+1][len+1])
 	int index = 0;
 	while(nodes[0]->key != 0)
 	{
-		// get minimum node
+		// get minimum node that is NOT in our tree so far
 		node* u = extractMin(nodes);
 		// get number of node
 		int num = u->num;
-		// get nodes still in queue & adjacent to u
+
+		// get nodes ALSO NOT IN TREE AND still in queue & adjacent to u
+		// the adjacent to u part is what needs to change
+		for (llnode* ptr = edgesMatrix[num]; ptr != NULL; ptr = ptr->next)
+		{
+			// get the node adjacent to it and its edge
+			float weight = ptr->edgeWeight;
+
+			// get its name
+			float nodeV = ptr->nodeName;
+
+			// if our weight is lower than it's key
+			// NEED SOME MASTER POINTER THING, then change it and then continue;
+
+		}
+		// this was the old loop
 		for (int i = 1; i < len + 1 - index; i++)
 		{
-			// get node at ith place
+			// get node at ith place that is adjacent to u, which is not in the tree
 			node* nodeV = nodes[i];
 			// get weight from node i to u
-			float weight = edges[num][nodeV->num];
+			float weight = edgesMatrix;
 			// if our weight is lower than node i's key
 			if (weight < nodeV->key)
 			{
