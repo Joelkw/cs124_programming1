@@ -44,7 +44,7 @@ float prim(int len, node* nodes[len+1], edge* edges[len+1])
 			}
 			ptr = ptr->next;
 		}
-
+		printf("hello\n");
 		forest[index] = u;
 		index++;
 	}

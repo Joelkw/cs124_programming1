@@ -31,7 +31,6 @@ void gen0Dim(int len, edge* edgeWeights[len+1])
 			edge* new = malloc(sizeof(edge));
 			new->to = j;
 			new->weight = randNum();
-			printf("weight is %f\n", new->weight);
 			new->next = root;
 			// ensure mirroring
 			edge* new2 = malloc(sizeof(edge));
