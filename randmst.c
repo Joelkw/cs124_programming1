@@ -228,6 +228,7 @@ int main(int argc, char* argv[])
 
 	// seed the random number generator
 	srand(time(NULL));
+	float avgMST;
 
 	// begin timing
 	clock_t start = clock();
@@ -287,13 +288,16 @@ int main(int argc, char* argv[])
 
 		// once we have generated all of our nodes and edges, run prim's!
 		float x = prim(numpoints, nodes, edgeWeights);
+		// update this so we can take an average
+		avgMST += x; 
 	}
 
 	// end timing
 	diff = clock() - start;
 	int msec = diff * 1000 / CLOCKS_PER_SEC;
 
+	avgMST = avgMST/numtrials;
 	// output results
-	printf("%i trials of dim%i with %i points took %d seconds and %d milliseconds \n",
-			numtrials, dimension, numpoints, msec/1000, msec%1000);
+	printf("%i trials of dim%i with %i points took %d seconds and %d milliseconds \n avgMST size was: %2.6f \n",
+			numtrials, dimension, numpoints, msec/1000, msec%1000, avgMST);
 }
