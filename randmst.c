@@ -62,8 +62,8 @@ float dist2d(float x1, float y1, float x2, float y2)
 void gen2Dim(int len, edge* edgeWeights[len+1])
 {
 	// a place for our x and y coordinates
-	float xs[len];
-	float ys[len];
+	float *xs = malloc(sizeof(float) * len);
+  float *ys = malloc(sizeof(float) * len);
 	// generate our points
 	for (int i = 1; i <= len; i++) 
 	{
@@ -83,7 +83,7 @@ void gen2Dim(int len, edge* edgeWeights[len+1])
 		for (int j = i; j <= len; j++)
 		{
 			float w = dist2d(xs[i],ys[i],xs[j],ys[j]);
-			printf("i,j and edge: (%i,%i) %2.6f \r\n", i, j, w);
+			//printf("i,j and edge: (%i,%i) %2.6f \r\n", i, j, w);
 			// create our node, affix to beginning
 				edge* new = malloc(sizeof(edge));
 				new->to = j;
@@ -110,9 +110,9 @@ float dist3d(float x1, float y1, float z1, float x2, float y2, float z2)
 void gen3Dim(int len, edge* edgeWeights[len+1])
 {
 	// a place for our x, y, and z coordinates
-	float xs[len];
-	float ys[len];
-	float zs[len];
+	float *xs = malloc(sizeof(float) * len);
+  float *ys = malloc(sizeof(float) * len);
+  float *zs = malloc(sizeof(float) * len);
 	// generate our points
 	for (int i = 1; i <= len; i++) 
 	{
@@ -159,10 +159,15 @@ float dist4d(float x1, float y1, float z1, float t1, float x2, float y2, float z
 void gen4Dim(int len, edge* edgeWeights[len+1])
 {
 	// a place for our x, y, z, and t coordinates
-	float xs[len];
-	float ys[len];
-	float zs[len];
-	float ts[len];
+	float *xs = malloc(sizeof(float) * len);
+  float *ys = malloc(sizeof(float) * len);
+  float *zs = malloc(sizeof(float) * len);
+  float *ts = malloc(sizeof(float) * len);
+
+	// float xs[len];
+	// float ys[len];
+	// float zs[len];
+	// float ts[len];
 
 	// generate our points
 	for (int i = 1; i <= len; i++) 
@@ -184,8 +189,9 @@ void gen4Dim(int len, edge* edgeWeights[len+1])
 		// j will loop through other nodes
 		for (int j = i; j <= len; j++)
 		{
-			float w = dist4d(xs[i],ys[i],zs[i],ts[i],
-						     xs[j],ys[j],zs[j],ts[j]);
+			float w = dist4d(xs[i],ys[i],zs[i],ts[i], xs[j],ys[j],zs[j],ts[j]);
+		//	printf("i,j and edge: (i,j) w \r\n");
+
 			// create our node, affix to beginning
 			edge* new = malloc(sizeof(edge));
 			new->to = j;
@@ -269,7 +275,7 @@ int main(int argc, char* argv[])
 		} 
 
 		// print edges
-		 for (int i = 1; i <= numpoints; i++)
+		/* for (int i = 1; i <= numpoints; i++)
 		{
 			for (edge* ptr = edgeWeights[i]; ptr != NULL; ptr = ptr->next)
 			{
@@ -277,6 +283,7 @@ int main(int argc, char* argv[])
 			}
 			printf("\n");
 		} 
+		*/
 
 		// once we have generated all of our nodes and edges, run prim's!
 		float x = prim(numpoints, nodes, edgeWeights);
