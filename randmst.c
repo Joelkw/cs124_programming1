@@ -19,7 +19,7 @@ float randNum()
 }
 
 // generates 0-dimensional edge weights
-void gen0Dim(int len, edge* edgeWeights[len+1])
+void gen0Dim(int len, edge* edgeWeights[len+1], float k)
 {
 	// generate some nulls
 	for (int i = 1; i <= len; i++)
@@ -33,7 +33,8 @@ void gen0Dim(int len, edge* edgeWeights[len+1])
 		for (int j = i; j <= len; j++)
 		{
 			float w = randNum();
-			if (w < 1)
+			// k(i) goes here
+			if (w < k)
 			{
 				// create our node, affix to beginning
 				edge* new = malloc(sizeof(edge));
@@ -59,7 +60,7 @@ float dist2d(float x1, float y1, float x2, float y2)
 }
 
 // generates 2-dimensional edge weights
-void gen2Dim(int len, edge* edgeWeights[len+1])
+void gen2Dim(int len, edge* edgeWeights[len+1], float k)
 {
 	// a place for our x and y coordinates
 	float *xs = malloc(sizeof(float) * len);
@@ -85,6 +86,8 @@ void gen2Dim(int len, edge* edgeWeights[len+1])
 			float w = dist2d(xs[i],ys[i],xs[j],ys[j]);
 			//printf("i,j and edge: (%i,%i) %2.6f \r\n", i, j, w);
 			// create our node, affix to beginning
+			if (w < k) 
+			{
 				edge* new = malloc(sizeof(edge));
 				new->to = j;
 				new->weight = w;
@@ -96,6 +99,7 @@ void gen2Dim(int len, edge* edgeWeights[len+1])
 				new2->weight = new->weight;
 				new2->next = edgeWeights[j];
 				edgeWeights[j] = new2;
+			}
 		}
 		edgeWeights[i] = root;
 	}
@@ -107,7 +111,7 @@ float dist3d(float x1, float y1, float z1, float x2, float y2, float z2)
 }
 
 // generates 3-dimensional edge weights
-void gen3Dim(int len, edge* edgeWeights[len+1])
+void gen3Dim(int len, edge* edgeWeights[len+1], float k)
 {
 	// a place for our x, y, and z coordinates
 	float *xs = malloc(sizeof(float) * len);
@@ -134,17 +138,20 @@ void gen3Dim(int len, edge* edgeWeights[len+1])
 		{
 			float w = dist3d(xs[i],ys[i],zs[i],xs[j],ys[j],zs[j]);
 			// create our node, affix to beginning
-			edge* new = malloc(sizeof(edge));
-			new->to = j;
-			new->weight = w;
-			new->next = root;
-			root = new;
-			// ensure mirroring
-			edge* new2 = malloc(sizeof(edge));
-			new2->to = i;
-			new2->weight = new->weight;
-			new2->next = edgeWeights[j];
-			edgeWeights[j] = new2;
+			if (w < k) 
+			{
+				edge* new = malloc(sizeof(edge));
+				new->to = j;
+				new->weight = w;
+				new->next = root;
+				root = new;
+				// ensure mirroring
+				edge* new2 = malloc(sizeof(edge));
+				new2->to = i;
+				new2->weight = new->weight;
+				new2->next = edgeWeights[j];
+				edgeWeights[j] = new2;
+			}
 		}
 		edgeWeights[i] = root;
 	}
@@ -156,7 +163,7 @@ float dist4d(float x1, float y1, float z1, float t1, float x2, float y2, float z
 }
 
 // generates 4-dimensional edge weights
-void gen4Dim(int len, edge* edgeWeights[len+1])
+void gen4Dim(int len, edge* edgeWeights[len+1], float k)
 {
 	// a place for our x, y, z, and t coordinates
 	float *xs = malloc(sizeof(float) * len);
@@ -191,19 +198,21 @@ void gen4Dim(int len, edge* edgeWeights[len+1])
 		{
 			float w = dist4d(xs[i],ys[i],zs[i],ts[i], xs[j],ys[j],zs[j],ts[j]);
 		//	printf("i,j and edge: (i,j) w \r\n");
-
-			// create our node, affix to beginning
-			edge* new = malloc(sizeof(edge));
-			new->to = j;
-			new->weight = w;
-			new->next = root;
-			root = new;
-			// ensure mirroring
-			edge* new2 = malloc(sizeof(edge));
-			new2->to = i;
-			new2->weight = new->weight;
-			new2->next = edgeWeights[j];
-			edgeWeights[j] = new2;
+			if (w < k) 
+			{
+				// create our node, affix to beginning
+				edge* new = malloc(sizeof(edge));
+				new->to = j;
+				new->weight = w;
+				new->next = root;
+				root = new;
+				// ensure mirroring
+				edge* new2 = malloc(sizeof(edge));
+				new2->to = i;
+				new2->weight = new->weight;
+				new2->next = edgeWeights[j];
+				edgeWeights[j] = new2;
+			}
 		}
 		edgeWeights[i] = root;
 	}
@@ -236,6 +245,24 @@ int main(int argc, char* argv[])
 
 	node* nodes[numpoints]; 
 
+	// get a k function to prune edges longer than k
+	float k = 1.0;
+	
+	if (numpoints > 1000)
+	{
+		k = 2.8/(log10f((float) numpoints));
+	}
+	else if (numpoints > 10000)
+	{
+		k = 1.8/(log10f((float) numpoints));
+	}
+	// to check, if you want;
+	if (flag == 1) 
+	{
+		k = 1.0;
+	}
+	printf("k was %f \n", k);
+
 	// iterate through trials
 	for (int t = 0; t < numtrials; t++)
 	{
@@ -260,19 +287,19 @@ int main(int argc, char* argv[])
 		// match on dimension type
 		if (dimension == 0)
 		{
-			gen0Dim(numpoints, edgeWeights);
+			gen0Dim(numpoints, edgeWeights, k);
 		}
 		else if (dimension == 2) 
 		{
-			gen2Dim(numpoints, edgeWeights);
+			gen2Dim(numpoints, edgeWeights, k);
 		}
 		else if (dimension == 3) 
 		{
-			gen3Dim(numpoints, edgeWeights);
+			gen3Dim(numpoints, edgeWeights, k);
 		}
 		else
 		{
-			gen4Dim(numpoints, edgeWeights);
+			gen4Dim(numpoints, edgeWeights, k);
 		} 
 
 		// print edges
