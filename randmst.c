@@ -63,8 +63,8 @@ float dist2d(float x1, float y1, float x2, float y2)
 void gen2Dim(int len, edge* edgeWeights[len+1], float k)
 {
 	// a place for our x and y coordinates
-	float *xs = malloc(sizeof(float) * len);
-  float *ys = malloc(sizeof(float) * len);
+	float *xs = malloc(sizeof(float) * (len+1));
+  float *ys = malloc(sizeof(float) * (len+1));
 	// generate our points
 	for (int i = 1; i <= len; i++) 
 	{
@@ -114,9 +114,9 @@ float dist3d(float x1, float y1, float z1, float x2, float y2, float z2)
 void gen3Dim(int len, edge* edgeWeights[len+1], float k)
 {
 	// a place for our x, y, and z coordinates
-	float *xs = malloc(sizeof(float) * len);
-  float *ys = malloc(sizeof(float) * len);
-  float *zs = malloc(sizeof(float) * len);
+	float *xs = malloc(sizeof(float) * (len+1));
+  float *ys = malloc(sizeof(float) * (len+1));
+  float *zs = malloc(sizeof(float) * (len+1));
 	// generate our points
 	for (int i = 1; i <= len; i++) 
 	{
@@ -166,10 +166,10 @@ float dist4d(float x1, float y1, float z1, float t1, float x2, float y2, float z
 void gen4Dim(int len, edge* edgeWeights[len+1], float k)
 {
 	// a place for our x, y, z, and t coordinates
-	float *xs = malloc(sizeof(float) * len);
-  float *ys = malloc(sizeof(float) * len);
-  float *zs = malloc(sizeof(float) * len);
-  float *ts = malloc(sizeof(float) * len);
+	float *xs = malloc(sizeof(float) * (len+1));
+  float *ys = malloc(sizeof(float) * (len+1));
+  float *zs = malloc(sizeof(float) * (len+1));
+  float *ts = malloc(sizeof(float) * (len+1));
 
 	// float xs[len];
 	// float ys[len];
