@@ -146,6 +146,7 @@ void gen3Dim(int len, edge* edgeWeights[len+1])
 			new2->next = edgeWeights[j];
 			edgeWeights[j] = new2;
 		}
+		edgeWeights[i] = root;
 	}
 }
 
@@ -198,6 +199,7 @@ void gen4Dim(int len, edge* edgeWeights[len+1])
 			new2->next = edgeWeights[j];
 			edgeWeights[j] = new2;
 		}
+		edgeWeights[i] = root;
 	}
 }
 
