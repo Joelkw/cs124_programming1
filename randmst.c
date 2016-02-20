@@ -6,7 +6,7 @@
 #include <limits.h>
 #include <stdlib.h>
 #include <float.h>
-#include <math.h> // necessary for sqrt()
+#include <math.h>
 
 #include "header.h"
 
@@ -18,14 +18,34 @@ float randNum()
 	return randNum;
 }
 
+// generates weight for pruning
+float getK(int numpoints, int flag)
+{
+	// to check
+	if (flag == 1) 
+	{
+		return 1.0;
+	}
+	if (numpoints > 1000)
+	{
+		return 2.8/(log10f((float) numpoints));
+	}
+	else if (numpoints > 10000)
+	{
+		return 1.8/(log10f((float) numpoints));
+	}
+	return 1.0;
+}
+
 // generates 0-dimensional edge weights
 void gen0Dim(int len, edge* edgeWeights[len+1], float k)
 {
-	// generate some nulls
+	// instantiate edgeweights as NULL
 	for (int i = 1; i <= len; i++)
 	{
 		edgeWeights[i] = NULL;
 	}
+
 	// fill array of linked lists with edgeweights
 	for (int i = 1; i <= len; i++)
 	{
@@ -33,7 +53,7 @@ void gen0Dim(int len, edge* edgeWeights[len+1], float k)
 		for (int j = i; j <= len; j++)
 		{
 			float w = randNum();
-			// k(i) goes here
+			// if we haven't pruned the edge
 			if (w < k)
 			{
 				// create our node, affix to beginning
@@ -64,14 +84,16 @@ void gen2Dim(int len, edge* edgeWeights[len+1], float k)
 {
 	// a place for our x and y coordinates
 	float *xs = malloc(sizeof(float) * (len+1));
-  float *ys = malloc(sizeof(float) * (len+1));
+	float *ys = malloc(sizeof(float) * (len+1));
+
 	// generate our points
 	for (int i = 1; i <= len; i++) 
 	{
 		xs[i] = randNum();
 		ys[i] = randNum();
 	}
-	// generate some nulls
+
+	// instantiate edgeweights as NULL
 	for (int i = 1; i <= len; i++)
 	{
 		edgeWeights[i] = NULL;
@@ -84,8 +106,7 @@ void gen2Dim(int len, edge* edgeWeights[len+1], float k)
 		for (int j = i; j <= len; j++)
 		{
 			float w = dist2d(xs[i],ys[i],xs[j],ys[j]);
-			//printf("i,j and edge: (%i,%i) %2.6f \r\n", i, j, w);
-			// create our node, affix to beginning
+			// if we haven't pruned the edge
 			if (w < k) 
 			{
 				edge* new = malloc(sizeof(edge));
@@ -103,6 +124,10 @@ void gen2Dim(int len, edge* edgeWeights[len+1], float k)
 		}
 		edgeWeights[i] = root;
 	}
+
+	// free storage
+	free(xs);
+	free(ys);
 }
 
 float dist3d(float x1, float y1, float z1, float x2, float y2, float z2) 
@@ -115,8 +140,9 @@ void gen3Dim(int len, edge* edgeWeights[len+1], float k)
 {
 	// a place for our x, y, and z coordinates
 	float *xs = malloc(sizeof(float) * (len+1));
-  float *ys = malloc(sizeof(float) * (len+1));
-  float *zs = malloc(sizeof(float) * (len+1));
+	float *ys = malloc(sizeof(float) * (len+1));
+	float *zs = malloc(sizeof(float) * (len+1));
+
 	// generate our points
 	for (int i = 1; i <= len; i++) 
 	{
@@ -124,7 +150,8 @@ void gen3Dim(int len, edge* edgeWeights[len+1], float k)
 		ys[i] = randNum();
 		zs[i] = randNum();
 	}
-	// generate some nulls
+
+	// instantiate edgeweights as NULL
 	for (int i = 1; i <= len; i++)
 	{
 		edgeWeights[i] = NULL;
@@ -137,7 +164,7 @@ void gen3Dim(int len, edge* edgeWeights[len+1], float k)
 		for (int j = i; j <= len; j++)
 		{
 			float w = dist3d(xs[i],ys[i],zs[i],xs[j],ys[j],zs[j]);
-			// create our node, affix to beginning
+			// if we haven't pruned the edge
 			if (w < k) 
 			{
 				edge* new = malloc(sizeof(edge));
@@ -155,6 +182,11 @@ void gen3Dim(int len, edge* edgeWeights[len+1], float k)
 		}
 		edgeWeights[i] = root;
 	}
+
+	// free storage
+	free(xs);
+	free(ys);
+	free(zs);
 }
 
 float dist4d(float x1, float y1, float z1, float t1, float x2, float y2, float z2, float t2) 
@@ -167,14 +199,9 @@ void gen4Dim(int len, edge* edgeWeights[len+1], float k)
 {
 	// a place for our x, y, z, and t coordinates
 	float *xs = malloc(sizeof(float) * (len+1));
-  float *ys = malloc(sizeof(float) * (len+1));
-  float *zs = malloc(sizeof(float) * (len+1));
-  float *ts = malloc(sizeof(float) * (len+1));
-
-	// float xs[len];
-	// float ys[len];
-	// float zs[len];
-	// float ts[len];
+	float *ys = malloc(sizeof(float) * (len+1));
+	float *zs = malloc(sizeof(float) * (len+1));
+	float *ts = malloc(sizeof(float) * (len+1));
 
 	// generate our points
 	for (int i = 1; i <= len; i++) 
@@ -184,20 +211,22 @@ void gen4Dim(int len, edge* edgeWeights[len+1], float k)
 		zs[i] = randNum();
 		ts[i] = randNum();
 	}
-	// generate some nulls
+
+	// instantiate edgeweights as NULL
 	for (int i = 1; i <= len; i++)
 	{
 		edgeWeights[i] = NULL;
 	}
+
 	// fill array of linked lists with edgeweights
 	for (int i = 1; i <= len; i++)
 	{
 		edge* root = edgeWeights[i];
-		// j will loop through other nodes
+		// loop through all other nodes
 		for (int j = i; j <= len; j++)
 		{
 			float w = dist4d(xs[i],ys[i],zs[i],ts[i], xs[j],ys[j],zs[j],ts[j]);
-		//	printf("i,j and edge: (i,j) w \r\n");
+			// if we haven't pruned the edge
 			if (w < k) 
 			{
 				// create our node, affix to beginning
@@ -216,6 +245,12 @@ void gen4Dim(int len, edge* edgeWeights[len+1], float k)
 		}
 		edgeWeights[i] = root;
 	}
+
+	// free storage
+	free(xs);
+	free(ys);
+	free(zs);
+	free(ts);
 }
 
 int main(int argc, char* argv[])
@@ -246,21 +281,8 @@ int main(int argc, char* argv[])
 	node* nodes[numpoints]; 
 
 	// get a k function to prune edges longer than k
-	float k = 1.0;
-	
-	if (numpoints > 1000)
-	{
-		k = 2.8/(log10f((float) numpoints));
-	}
-	else if (numpoints > 10000)
-	{
-		k = 1.8/(log10f((float) numpoints));
-	}
-	// to check, if you want;
-	if (flag == 1) 
-	{
-		k = 1.0;
-	}
+	float k = getK(numpoints, flag);
+
 	printf("k was %f \n", k);
 
 	// iterate through trials
@@ -302,19 +324,9 @@ int main(int argc, char* argv[])
 			gen4Dim(numpoints, edgeWeights, k);
 		} 
 
-		// print edges
-		/* for (int i = 1; i <= numpoints; i++)
-		{
-			for (edge* ptr = edgeWeights[i]; ptr != NULL; ptr = ptr->next)
-			{
-				printf("%f ", ptr->weight);
-			}
-			printf("\n");
-		} 
-		*/
-
 		// once we have generated all of our nodes and edges, run prim's!
 		float x = prim(numpoints, nodes, edgeWeights);
+
 		// update this so we can take an average
 		avgMST += x; 
 	}
@@ -323,7 +335,9 @@ int main(int argc, char* argv[])
 	diff = clock() - start;
 	int msec = diff * 1000 / CLOCKS_PER_SEC;
 
-	avgMST = avgMST/numtrials;
+	// calculate average MST length
+	avgMST = avgMST / numtrials;
+
 	// output results
 	printf("%i trials of dim%i with %i points took %d seconds and %d milliseconds \n avgMST size was: %2.6f \n",
 			numtrials, dimension, numpoints, msec/1000, msec%1000, avgMST);

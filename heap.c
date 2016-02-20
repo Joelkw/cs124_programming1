@@ -11,12 +11,12 @@
 // prints a heap!
 void printHeap(node* heap[])
 {
-	/* printf("size: %i\n", (int) heap[0]->key);
+	printf("heap size: %i\n", (int) heap[0]->key);
 	for (int j = 1; j <= heap[0]->key; j++)
 	{
 		printf("%d ", heap[j]->num);
 	}
-	printf("\n"); */
+	printf("\n");
 }
 
 // inserts an element into a heap
@@ -62,10 +62,8 @@ int getParent(int index)
 // bubbles up an element
 void bubbleUp(node* heap[], int index)
 {
-	//printf("BUBBLING UP %i at spot %i \n", heap[index]->num, index);
 	// get parent location
 	int parent = getParent(index);
-	//printf("%i's parent was %i at spot %i", heap[index]->num, heap[parent]->num, parent);
 	// swap upwards while needed
 	while (index > 1 && heap[parent]->key > heap[index]->key)
 	{
@@ -81,8 +79,6 @@ void bubbleUp(node* heap[], int index)
 // plucks an element from the top of the heap
 node* extractMin(node* heap[])
 {
-	//printf("before extractMin \n");
-	printHeap(heap);
 	int size = (int) heap[0]->key;
 	// swap ending node into start of heap
 	node* min = heap[1];
@@ -93,8 +89,6 @@ node* extractMin(node* heap[])
 	// balance our heap
 	minHeapify(heap, 1);
 	// return node
-	//printf("we extracted node %i \n", min->num);
-	printHeap(heap);
 	return min;
 }
 
