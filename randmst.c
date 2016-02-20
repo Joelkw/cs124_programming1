@@ -21,7 +21,7 @@ float randNum()
 // generates weight for pruning
 float getK(int numpoints, int flag)
 {
-	// to check
+	// prune nothing if flag is on
 	if (flag == 1) 
 	{
 		return 1.0;
