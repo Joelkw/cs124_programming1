@@ -22,7 +22,7 @@ float randNum()
 float getK(int numpoints, int dim, int flag)
 {
 	// prune nothing if flag is on
-	if (flag == 1) 
+	if (flag == 1 || numpoints < 1024) 
 	{
 		return 1.0;
 	}
