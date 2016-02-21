@@ -19,20 +19,24 @@ float randNum()
 }
 
 // generates weight for pruning
-float getK(int numpoints, int flag)
+float getK(int numpoints, int dim, int flag)
 {
 	// prune nothing if flag is on
 	if (flag == 1) 
 	{
 		return 1.0;
 	}
-	if (numpoints > 4096)
+	if (dim == 2)
 	{
-		return 2.8/(log10f((float) numpoints));
+		return 0.521;
 	}
-	if (numpoints > 8192)
+	if (dim == 3)
 	{
-		return 1.8/(log10f((float) numpoints));
+		return 0.662;
+	}
+	if (dim == 4)
+	{
+		return 0.777;
 	}
 	return 1.0;
 }
@@ -281,7 +285,7 @@ int main(int argc, char* argv[])
 	node* nodes[numpoints]; 
 
 	// get a k function to prune edges longer than k
-	float k = getK(numpoints, flag);
+	float k = getK(numpoints, dimension, flag);
 
 	printf("k was %f \n", k);
 
