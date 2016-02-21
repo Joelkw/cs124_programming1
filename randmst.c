@@ -26,11 +26,11 @@ float getK(int numpoints, int flag)
 	{
 		return 1.0;
 	}
-	if (numpoints > 1000)
+	if (numpoints > 4096)
 	{
 		return 2.8/(log10f((float) numpoints));
 	}
-	else if (numpoints > 10000)
+	if (numpoints > 8192)
 	{
 		return 1.8/(log10f((float) numpoints));
 	}
